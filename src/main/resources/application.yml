@@ -1,3 +1,19 @@
-# 设置服务器端口
-server.port=8082
-# 其他常见配置...
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:mysql://mysql.sqlpub.com:3306/invmanage?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: happycode
+    password: 31Caxtcttp2woNnr
+  jpa:
+    hibernate:
+      ddl-auto: update  # 设定 JPA 自动处理数据库表结构
+    show-sql: true  # 打印 SQL 语句
+    properties:
+      hibernate:
+        format_sql: true  # 格式化 SQL
+  jackson:
+    serialization:
+      indent-output: true  # JSON 美化输出
