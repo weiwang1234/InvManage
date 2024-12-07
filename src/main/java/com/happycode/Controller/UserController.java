@@ -44,4 +44,18 @@ public class UserController {
     public void deleteUser(@RequestBody UserInfo userInfo) {
         userInfoRepository.deleteById(userInfo.getUserid());
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody UserInfo userInfo) {
+        // 根据用户名查询用户
+        UserInfo user = userInfoRepository.findByloginid(userInfo.getLoginid());
+
+        if (user != null && user.getPassword().equals(userInfo.getPassword())&& user.getStatus().equals("1")) {
+            // 登录成功，返回成功信息
+            return "登录成功";
+        } else {
+            // 登录失败，返回失败信息
+            return "用户名或密码错误";
+        }
+    }
 }

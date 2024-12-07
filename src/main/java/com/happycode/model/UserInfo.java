@@ -19,6 +19,8 @@ public class UserInfo {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "loginid")
+    private String loginid;
     // Getters and Setters
     public Long getUserid() {
         return userid;
@@ -50,5 +52,12 @@ public class UserInfo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getLoginid() {
+        return loginid;
+    }
+
+    public void setLoginid(String loginid) {
+        this.loginid = loginid;
     }
 }
