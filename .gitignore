@@ -1,0 +1,54 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# BlueJ files
+*.ctxt
+gradle/
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Eclipse specific files
+.project
+.classpath
+.settings/
+.localhistory/
+.buildpath
+gradlew
+gradlew.bat
+# VS Code files
+.vscode/
+
+# Ignore other IDE-specific temp files
+bin/
