@@ -4,6 +4,7 @@ import com.happycode.model.UserInfo;
 import com.happycode.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;  // 导入 ResponseEntity
 
 import java.util.List;
 
@@ -46,16 +47,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserInfo userInfo) {
+    public ResponseEntity<String> login(@RequestBody UserInfo userInfo) {
         // 根据用户名查询用户
         UserInfo user = userInfoRepository.findByloginid(userInfo.getLoginid());
 
         if (user != null && user.getPassword().equals(userInfo.getPassword())&& user.getStatus().equals("1")) {
             // 登录成功，返回成功信息
-            return "登录成功";
+            return ResponseEntity.ok(user.getUsername());  // 返回用户名
         } else {
             // 登录失败，返回失败信息
-            return "用户名或密码错误";
+            return ResponseEntity.status(400).body("用户名或密码错误");  // 返回 400 错误
         }
     }
 }
