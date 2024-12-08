@@ -2,11 +2,15 @@ package com.happycode.Controller;
 
 import com.happycode.model.UserInfo;
 import com.happycode.repository.UserInfoRepository;
+import com.happycode.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;  // 导入 ResponseEntity
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -47,16 +51,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserInfo userInfo) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserInfo userInfo) {
         // 根据用户名查询用户
         UserInfo user = userInfoRepository.findByloginid(userInfo.getLoginid());
 
-        if (user != null && user.getPassword().equals(userInfo.getPassword())&& user.getStatus().equals("1")) {
-            // 登录成功，返回成功信息
-            return ResponseEntity.ok(user.getUsername());  // 返回用户名
+        if (user != null && user.getPassword().equals(userInfo.getPassword()) && user.getStatus().equals("1")) {
+            // 登录成功，生成 token
+            String token = JwtUtil.generateToken(user.getUsername());
+
+            // 构建返回的 Map，包含 token 和 username
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", user.getUsername());
+
+            // 返回 token 和 username
+            return ResponseEntity.ok(response);
         } else {
             // 登录失败，返回失败信息
-            return ResponseEntity.status(400).body("用户名或密码错误");  // 返回 400 错误
+            return ResponseEntity.status(200).body(Collections.emptyMap());  // 400 错误
         }
     }
 }
