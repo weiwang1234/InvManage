@@ -14,6 +14,7 @@ spring:
     properties:
       hibernate:
         format_sql: true  # 格式化 SQL
+        generate_statistics: true
   jackson:
     serialization:
       indent-output: true  # JSON 美化输出

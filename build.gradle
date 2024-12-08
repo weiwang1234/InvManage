@@ -20,6 +20,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // 添加 JPA 依赖
     implementation 'mysql:mysql-connector-java:8.0.33'  // 添加 MySQL 依赖
+    //implementation 'mysql:mysql-connector-java:5.1.49' // 推荐版本
 
 }
 
