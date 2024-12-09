@@ -23,7 +23,7 @@ public class UserController {
     @PostMapping("/getAll")
     public List<UserInfo> getAllUsers(@RequestBody(required = false) Object params) {
         // 如果需要参数传递，可以从 params 中提取（例如分页、过滤条件等）
-        return userInfoRepository.findAll();
+        return userInfoRepository.findByStatus("1");
     }
 
     // 根据用户ID查询单个用户
@@ -44,10 +44,14 @@ public class UserController {
         return userInfoRepository.save(userInfo);
     }
 
-    // 删除用户
+    // 删除用户 改为软删除
     @PostMapping("/delete")
     public void deleteUser(@RequestBody UserInfo userInfo) {
-        userInfoRepository.deleteById(userInfo.getUserid());
+
+        UserInfo userinfo  =  userInfoRepository.findById(userInfo.getUserid()).orElse(null);
+        userinfo.setStatus("2");
+        userInfoRepository.save(userinfo);
+        //userInfoRepository.deleteById(userInfo.getUserid());
     }
 
     @PostMapping("/login")
