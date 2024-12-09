@@ -1,8 +1,10 @@
 package com.happycode.Controller;
 
 import com.happycode.model.Partner;
+import com.happycode.model.UserInfo;
 import com.happycode.service.PartnerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,10 +45,15 @@ public class PartnerController {
     }
 
     // 删除合作方（POST 请求）
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
-        partnerService.deletePartner(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/delete")
+    public ResponseEntity<String> deletePartner(@RequestBody Partner partner) {
+        try {
+            partnerService.deletePartner(partner.getPartnerid()); // 调用 service 层的软删除方法
+            return ResponseEntity.ok("合作方已成功删除");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("未找到合作方，无法删除");
+        }
     }
 
     // 搜索合作方（POST 请求）

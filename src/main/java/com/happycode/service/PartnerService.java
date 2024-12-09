@@ -22,7 +22,7 @@ public class PartnerService {
 
     // 根据 id 查找合作方
     public Optional<Partner> getPartnerById(Long id) {
-        return partnerRepository.findById(id);
+        return partnerRepository.findById(id); // 如果没有找到，返回 null
     }
 
     // 新增合作方
@@ -47,7 +47,21 @@ public class PartnerService {
 
     // 删除合作方
     public void deletePartner(Long id) {
-        partnerRepository.deleteById(id);
+        Optional<Partner> partnerOpt = getPartnerById(id);
+
+        // 如果找到了合作方
+        if (partnerOpt.isPresent()) {
+            Partner foundPartner = partnerOpt.get();
+
+            // 修改 status 字段为 "2"（表示软删除）
+            foundPartner.setPartnerstatus("2");
+
+            // 保存修改后的合作方对象
+            partnerRepository.save(foundPartner);
+        } else {
+            // 如果未找到合作方，做一些处理（如抛出异常或返回提示）
+            System.out.println("未找到合作方，无法删除");
+        }
     }
 
     // 根据名称和电话进行搜索
