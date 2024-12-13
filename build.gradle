@@ -27,6 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.projectlombok:lombok:1.18.24' // 编译时可用
     annotationProcessor 'org.projectlombok:lombok:1.18.24' // 注解处理器
+    implementation 'com.alibaba:fastjson:1.2.83'
+
 
 
 }

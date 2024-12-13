@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -76,6 +77,22 @@ public class OrderController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("订单创建失败: " + e.getMessage());
         }
+
+
     }
+
+    @PostMapping("/summary")
+    public ResponseEntity<?> getOrderSummary(@RequestBody Map<String, Object> params) {
+        // 默认查询条件为 null，调用服务层动态查询
+        System.out.println("接收到的请求体：" + params); // 打印接收到的请求内容
+
+        String sWhere = (String) params.get("sWhere");
+
+
+        return ResponseEntity.ok(orderService.getOrderSummary(sWhere)); // 确保返回 200 状态码
+
+    }
+
+
 }
 
