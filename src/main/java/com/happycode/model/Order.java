@@ -26,6 +26,4 @@ public class Order {
     private String orderparname;
 
 
-    @Column(name = "orderdatetime", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime orderdatetime;
 }
