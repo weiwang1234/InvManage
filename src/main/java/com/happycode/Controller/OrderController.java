@@ -92,6 +92,31 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderSummary(sWhere)); // 确保返回 200 状态码
 
     }
+    @PostMapping("/summarydetails")
+    public ResponseEntity<?> getSummaryDetails(@RequestBody Map<String, Object> params) {
+        // 默认查询条件为 null，调用服务层动态查询
+        System.out.println("接收到的请求体：" + params); // 打印接收到的请求内容
+
+        String sWhere = (String) params.get("sWhere");
+
+
+        return ResponseEntity.ok(orderService.getOrderSummary(sWhere)); // 确保返回 200 状态码
+
+    }
+
+    @PostMapping("/summarydetailsviews")
+    public ResponseEntity<?> getSummarydetailsViews(@RequestBody Map<String, Object> params) {
+        // 默认查询条件为 null，调用服务层动态查询
+        System.out.println("接收到的请求体：" + params); // 打印接收到的请求内容
+
+        String sWhere = (String) params.get("sWhere");
+
+
+        return ResponseEntity.ok(orderService.summarydetailsViews(sWhere)); // 确保返回 200 状态码
+
+    }
+
+
 
 
 }

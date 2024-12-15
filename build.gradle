@@ -28,6 +28,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24' // 编译时可用
     annotationProcessor 'org.projectlombok:lombok:1.18.24' // 注解处理器
     implementation 'com.alibaba:fastjson:1.2.83'
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
 
 
 

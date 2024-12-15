@@ -79,7 +79,7 @@ public class OrderService {
     public JSONArray getOrderSummary(String sWhere) {
 
         JSONObject jsonObject = JSON.parseObject(sWhere);
-        String sqlwhere  ="SELECT orderparname, SUM(ordertotalamount) AS totalAmount "
+        String sqlwhere  ="SELECT orderparid,orderparname, SUM(ordertotalamount) AS totalAmount "
                  + " FROM orders_list WHERE 1=1 ";
         if (jsonObject != null && !jsonObject.isEmpty()) {
             if (!jsonObject.getString("StartDate").isEmpty()&&
@@ -95,7 +95,49 @@ public class OrderService {
                 }
             }
 
-        sqlwhere += " GROUP BY orderid, orderparname ORDER BY totalAmount  desc ";
+        sqlwhere += " GROUP BY orderparid, orderparname ORDER BY totalAmount  desc ";
+
+        Query query = entityManager.createNativeQuery(sqlwhere);
+
+        List<Object[]> results = query.getResultList();
+        JSONArray jsonArray = new JSONArray();
+        for (Object[] row : results) {
+            JSONObject json = new JSONObject();
+            json.put("orderparid", row[0]);
+            json.put("orderparname", row[1]);
+            json.put("totalAmount", row[2]);
+            jsonArray.add(json);
+        }
+
+
+        return jsonArray;
+
+    }
+
+    public JSONArray summarydetails(String sWhere) {
+
+        JSONObject jsonObject = JSON.parseObject(sWhere);
+        String sqlwhere  =" select orderparname ,productname ,sum(quantity) as quantity ,sum(unitprice) as  unitprice from orders_detail od where   ";
+        if (jsonObject != null && !jsonObject.isEmpty()) {
+            if (!jsonObject.getString("StartDate").isEmpty()&&
+                    !jsonObject.getString("EndDate").isEmpty()) {
+                sqlwhere += "  1=1 and orderdate>='"+jsonObject.getString("StartDate")+"' AND orderdate<='"+jsonObject.getString("EndDate")+"'";
+                if (!jsonObject.getString("orderparname").isEmpty()) {
+                    sqlwhere+=" and  orderparname = '"+jsonObject.getString("orderparname")+"'";
+
+                }
+            } else if (!jsonObject.getString("orderparname").isEmpty()) {
+                sqlwhere+=" 1=1 and orderparname = '"+jsonObject.getString("orderparname")+"'";
+
+            }else {
+                sqlwhere  =" select * from orders_detail od where  1=2 ";
+            }
+            sqlwhere += " GROUP BY orderparid,productid,orderparname,productname ORDER BY unitprice  desc ";
+
+        }else {
+            sqlwhere  =" select * from orders_detail od where  1=2 ";
+        }
+
 
         Query query = entityManager.createNativeQuery(sqlwhere);
 
@@ -104,7 +146,51 @@ public class OrderService {
         for (Object[] row : results) {
             JSONObject json = new JSONObject();
             json.put("orderparname", row[0]);
-            json.put("totalAmount", row[1]);
+            json.put("productname", row[1]);
+            json.put("quantity", row[2]);
+            json.put("unitprice", row[3]);
+            jsonArray.add(json);
+        }
+
+
+        return jsonArray;
+
+    }
+
+    public JSONArray summarydetailsViews(String sWhere) {
+
+        JSONObject jsonObject = JSON.parseObject(sWhere);
+        String sqlwhere  =" select productname ,sum(quantity) as quantity ,sum(unitprice) as  unitprice from orders_detail od where    ";
+        if (jsonObject != null && !jsonObject.isEmpty()) {
+            if (!jsonObject.getString("StartDate").isEmpty()&&
+                    !jsonObject.getString("EndDate").isEmpty()) {
+                sqlwhere += "  1=1 and orderdate>='"+jsonObject.getString("StartDate")+"' AND orderdate<='"+jsonObject.getString("EndDate")+"'";
+                if (!jsonObject.getString("orderparid").isEmpty()) {
+                    sqlwhere+=" and  orderparid = '"+jsonObject.getString("orderparid")+"'";
+
+                }
+            } else if (!jsonObject.getString("orderparid").isEmpty()) {
+                sqlwhere+=" 1=1 and orderparid = '"+jsonObject.getString("orderparid")+"'";
+
+            }else {
+                sqlwhere  =" select * from orders_detail od where  1=2 ";
+            }
+            sqlwhere += " GROUP BY orderparid,productid,productname ORDER BY unitprice  desc ";
+
+        }else {
+            sqlwhere  =" select * from orders_detail od where  1=2 ";
+        }
+
+
+        Query query = entityManager.createNativeQuery(sqlwhere);
+
+        List<Object[]> results = query.getResultList();
+        JSONArray jsonArray = new JSONArray();
+        for (Object[] row : results) {
+            JSONObject json = new JSONObject();
+            json.put("productname", row[0]);
+            json.put("quantity", row[1]);
+            json.put("unitprice", row[2]);
             jsonArray.add(json);
         }
 
