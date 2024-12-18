@@ -89,7 +89,9 @@ public class OrderService {
 
         return false;
     }
-
+    public Order saveOrder(Order order) {
+        return orderRepository.save(order);
+    }
     @Transactional
     public void createOrderWithDetails(Order order, List<OrderDetail> orderDetails) {
         // 遍历订单详情，检查库存是否充足

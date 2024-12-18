@@ -18,7 +18,7 @@ public class Order {
     private String orderparid;
 
     @Column(name = "ordertotalamount")
-    private String ordertotalamount;
+    private double ordertotalamount;
 
     @Column(name = "orderdate")
     private String orderdate;

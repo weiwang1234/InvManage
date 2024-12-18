@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @Table(name = "orders_detail")
-public class OrderDetail {
+public  class  OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class OrderDetail {
     private Long productid; // 产品编号
     private String productname; // 产品名称
     private Integer quantity; // 商品数量
-    private String unitprice; // 单价
+    private double unitprice; // 单价
     private String orderdate; // 单价
     private Long orderparid; // 订单用户id
     private String orderparname; // 订单用户名称
