@@ -1,7 +1,6 @@
 package com.happycode.Controller;
 
-import com.happycode.entity.Product;
-import com.happycode.model.Partner;
+import com.happycode.model.Product;
 import com.happycode.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.happycode.repository;
 
-import com.happycode.entity.Product;
-import com.happycode.model.Partner;
+
+import com.happycode.model.Product;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

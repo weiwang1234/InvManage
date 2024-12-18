@@ -3,8 +3,10 @@ package com.happycode.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.happycode.model.Inventory;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
+import com.happycode.repository.InventoryRepository;
 import com.happycode.repository.OrderDetailRepository;
 import com.happycode.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderDetailRepository orderdetailrepository;
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -54,18 +59,62 @@ public class OrderService {
     // 删除订单
     @Transactional
     public boolean deleteOrder(Long orderId) {
+        // 查询订单明细
+        List<OrderDetail> orderDetails = orderdetailrepository.findByOrderid(orderId);
+
+        // 恢复库存
+        for (OrderDetail detail : orderDetails) {
+            long productId = detail.getProductid();
+            int quantitySold = detail.getQuantity();
+
+            // 查找库存记录
+            Inventory inventory = inventoryRepository.findByProductid(productId);
+            if (inventory != null) {
+                // 恢复库存数量
+                inventory.setQuantity(inventory.getQuantity() + quantitySold);
+                inventoryRepository.save(inventory);
+            } else {
+                throw new RuntimeException("库存记录不存在，无法恢复库存！");
+            }
+        }
+
+        // 删除订单明细
         orderdetailrepository.deleteByOrderid(orderId);
 
+        // 删除主订单
         if (orderRepository.existsById(orderId)) {
             orderRepository.deleteById(orderId);
-
             return true;
         }
+
         return false;
     }
 
     @Transactional
     public void createOrderWithDetails(Order order, List<OrderDetail> orderDetails) {
+        // 遍历订单详情，检查库存是否充足
+        for (OrderDetail detail : orderDetails) {
+            long productId = detail.getProductid();
+            int quantitySold = detail.getQuantity();
+
+            // 获取当前库存
+            Inventory inventory = inventoryRepository.findByProductid(productId);
+
+            if (inventory == null || inventory.getQuantity() < quantitySold) {
+                throw new RuntimeException("产品 " + detail.getProductname() + " 的库存不足，无法完成订单！");
+            }
+        }
+
+        // 更新库存
+        for (OrderDetail detail : orderDetails) {
+            long productId = detail.getProductid();
+            int quantitySold = detail.getQuantity();
+
+            Inventory inventory = inventoryRepository.findByProductid(productId);
+            inventory.setQuantity(inventory.getQuantity() - quantitySold);
+            inventoryRepository.save(inventory);
+        }
+
         // 保存订单，返回生成的主键
         Order savedOrder = orderRepository.save(order);
 
@@ -75,6 +124,7 @@ public class OrderService {
         // 批量保存产品
         orderdetailrepository.saveAll(orderDetails);
     }
+
 
     public JSONArray getOrderSummary(String sWhere) {
 
@@ -198,4 +248,7 @@ public class OrderService {
         return jsonArray;
 
     }
+
+
+
 }

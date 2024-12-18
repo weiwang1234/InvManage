@@ -1,7 +1,6 @@
 package com.happycode.service;
 
-import com.happycode.entity.Product;
-import com.happycode.model.Partner;
+import com.happycode.model.Product;
 import com.happycode.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

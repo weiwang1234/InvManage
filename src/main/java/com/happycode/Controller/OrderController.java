@@ -74,11 +74,11 @@ public class OrderController {
             orderService.createOrderWithDetails(order, orderDetails);
 
             return ResponseEntity.ok("订单创建成功");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("订单创建失败: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("订单创建失败: " + e.getMessage());
         }
-
-
     }
 
     @PostMapping("/summary")

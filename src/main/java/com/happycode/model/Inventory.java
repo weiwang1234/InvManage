@@ -1,20 +1,23 @@
 package com.happycode.model;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "inventory")
 @Data
-@Table(name = "product_list")
-public class Product {
+public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productid;
+    private Long inventoryid;
 
+    private Long productid;
     private String productname;
-    private String productstatus;
+    private Integer quantity;
+
+
 
 }
