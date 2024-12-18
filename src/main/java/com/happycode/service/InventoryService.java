@@ -3,6 +3,7 @@ package com.happycode.service;
 import com.happycode.model.Inventory;
 import com.happycode.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,13 @@ public class InventoryService {
     private InventoryRepository inventoryRepository;
 
     // 获取所有库存
-    public List<Inventory> getAllInventories() {
-        return inventoryRepository.findAll();
+
+    public List<Inventory> getAllInventories(String sortField, boolean ascending) {
+        // 根据 ascending 决定升序还是降序
+        Sort sort = ascending ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        return inventoryRepository.findAll(sort);
     }
+
 
     // 根据 ID 获取单个库存
     public Optional<Inventory> getInventoryById(Long inventoryid) {
