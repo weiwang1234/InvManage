@@ -39,4 +39,8 @@ public class PurchaseOrderDetailController {
         service.deleteById(id);
         return "Purchase order detail with ID " + id + " has been deleted.";
     }
+    @PostMapping("/getorderid/{id}")
+    public List<PurchaseOrderDetail> findByOrderid(@PathVariable Long id) {
+        return service.findByOrderid(id);
+    }
 }

@@ -28,4 +28,8 @@ public class PurchaseOrderDetailService {
     public void deleteById(Long ordetailid) {
         repository.deleteById(ordetailid);
     }
+    public List<PurchaseOrderDetail>  findByOrderid(Long orderId) {
+       return   repository.findByOrderid(orderId);
+    }
+
 }
