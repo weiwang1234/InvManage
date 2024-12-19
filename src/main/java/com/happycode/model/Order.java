@@ -22,8 +22,13 @@ public class Order {
 
     @Column(name = "orderdate")
     private String orderdate;
+
     @Column(name = "orderparname")
     private String orderparname;
+
+    @Column(name = "inserttime", updatable = false, insertable = false)
+    private String inserttime;
+
 
 
 }

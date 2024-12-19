@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -126,6 +127,16 @@ public class OrderService {
         // 批量保存产品
         orderdetailrepository.saveAll(orderDetails);
     }
+
+    //只查询当天的数据
+    @Transactional
+    public List<Order> findByOrderDateOrInsertTime() {
+        String today = LocalDate.now().toString(); // 转换为 yyyy-MM-dd 格式
+        List<Order> orders = orderRepository.findByOrderDateOrInsertTime(today);
+        return orders;
+
+    }
+
 
 
     public JSONArray getOrderSummary(String sWhere) {

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +27,13 @@ public class OrderController {
     @PostMapping("/getAll")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    // 获取所有订单
+    @PostMapping("/getsamday")
+    public List<Order> getsamdayOrders() {
+
+        return orderService.findByOrderDateOrInsertTime();
     }
 
     // 获取单个订单
