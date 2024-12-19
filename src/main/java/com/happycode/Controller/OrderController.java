@@ -3,6 +3,7 @@ package com.happycode.Controller;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
 import com.happycode.model.OrderRequest;
+import com.happycode.model.SearchCriteria;
 import com.happycode.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,15 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    // 获取所有订单
+    // 获取当日订单
     @PostMapping("/getsamday")
     public List<Order> getsamdayOrders() {
 
         return orderService.findByOrderDateOrInsertTime();
+    }
+    @PostMapping("/searchOrders")
+    public List<Order> searchOrders(@RequestBody SearchCriteria criteria) {
+        return orderService.searchOrders(criteria);
     }
 
     // 获取单个订单

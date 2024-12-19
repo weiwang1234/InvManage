@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.happycode.model.Inventory;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
+import com.happycode.model.SearchCriteria;
 import com.happycode.repository.InventoryRepository;
 import com.happycode.repository.OrderDetailRepository;
 import com.happycode.repository.OrderRepository;
@@ -137,7 +138,9 @@ public class OrderService {
 
     }
 
-
+    public List<Order> searchOrders(SearchCriteria criteria) {
+        return orderRepository.findOrders(criteria.getStartDate(), criteria.getEndDate(), criteria.getCustomerName());
+    }
 
     public JSONArray getOrderSummary(String sWhere) {
 
