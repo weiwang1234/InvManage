@@ -142,7 +142,7 @@ public class OrderService {
 
                 }
             } else if (!jsonObject.getString("orderparname").isEmpty()) {
-                sqlwhere+="   orderparname = '"+jsonObject.getString("orderparname")+"'";
+                sqlwhere+="  and orderparname = '"+jsonObject.getString("orderparname")+"'";
 
                 }
             }
