@@ -2,6 +2,7 @@ package com.happycode.service;
 
 import com.happycode.model.Inventory;
 import com.happycode.repository.InventoryRepository;
+import com.happycode.utils.InsufficientStockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -57,4 +58,37 @@ public class InventoryService {
                 .orElseThrow(() -> new RuntimeException("Inventory not found with id " + inventoryid)); // 使用 RuntimeException 作为异常类
         inventoryRepository.delete(inventory);
     }
+
+    //-----------------------------------------------------------新添加工具方法---------------------------------------------
+
+    public void updateInventory(Long productId, String productName, int quantity, String operation) {
+        Optional<Inventory> optionalInventory = Optional.ofNullable(inventoryRepository.findByProductid(productId));
+        Inventory inventory;
+        if (optionalInventory.isPresent()) {
+            inventory = optionalInventory.get();
+        } else {
+            inventory = new Inventory();
+            inventory.setProductid(productId);
+            inventory.setProductname(productName);
+            inventory.setQuantity(0); // 初始库存为0
+        }
+
+        if ("increase".equalsIgnoreCase(operation)) {
+            inventory.setQuantity(inventory.getQuantity() + quantity); // 增加库存
+        } else if ("decrease".equalsIgnoreCase(operation)) {
+            if (inventory.getQuantity() < quantity) {
+                throw new InsufficientStockException(
+                         "["+productName+"]库存不足,无法删除 "
+                );
+            }
+            inventory.setQuantity(inventory.getQuantity() - quantity); // 减少库存
+        } else {
+            throw new IllegalArgumentException("无效的操作类型: " + operation);
+        }
+
+        inventoryRepository.save(inventory);
+    }
+
+
+
 }

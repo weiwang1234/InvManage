@@ -17,6 +17,9 @@ public class PurchaseOrderService {
     private PurchaseOrderRepository repository;
     @Autowired
     private PurchaseOrderDetailRepository purchaseOrderDetailRepository;
+    @Autowired
+    private InventoryService inventoryservice;
+
 
 
 
@@ -46,7 +49,6 @@ public class PurchaseOrderService {
     @Transactional
     public void createOrder(PurchaseOrderRequest purchaseorderrequest) {
         // 保存订单主表
-       ;
         PurchaseOrder savedOrder = repository.save( purchaseorderrequest.getPurchaseorder());
 
 
@@ -56,6 +58,23 @@ public class PurchaseOrderService {
             detail.setOrderparid(savedOrder.getOrderparid());
             detail.setOrderparname(savedOrder.getOrderparname());
             purchaseOrderDetailRepository.save(detail);
+            //添加成功更新库存
+            inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"increase");
         }
+
+    }
+
+    @Transactional
+    public void deleteOrderWithDetails(Long orderId) {
+        // 查询所有与订单关联的明细记录
+        List<PurchaseOrderDetail> orderDetails = purchaseOrderDetailRepository.findByOrderid(orderId);
+        // 恢复库存
+        for (PurchaseOrderDetail detail : orderDetails) {
+            inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"decrease");
+        }
+        // 删除订单明细
+        purchaseOrderDetailRepository.deleteByOrderid(orderId);
+        // 删除主订单
+        repository.deleteById(orderId);
     }
 }

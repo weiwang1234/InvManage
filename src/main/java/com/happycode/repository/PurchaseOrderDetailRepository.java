@@ -10,5 +10,7 @@ import java.util.List;
 public interface PurchaseOrderDetailRepository extends JpaRepository<PurchaseOrderDetail, Long> {
 
     List<PurchaseOrderDetail> findByOrderid(Long orderId);
+    void deleteByOrderid(Long orderid); // 删除明细
+
 
 }

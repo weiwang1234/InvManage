@@ -21,11 +21,11 @@ public class PurchaseOrderDetail {
 
     private String orderparname;
 
-    private String productid;
+    private Long productid;
 
     private String productname;
 
-    private Integer quantity;
+    private int quantity;
 
     private BigDecimal unitprice;
 

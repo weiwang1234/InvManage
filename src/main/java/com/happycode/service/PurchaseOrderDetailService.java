@@ -1,10 +1,13 @@
 package com.happycode.service;
 
+import com.happycode.model.PurchaseOrder;
 import com.happycode.model.PurchaseOrderDetail;
 import com.happycode.repository.PurchaseOrderDetailRepository;
+import com.happycode.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -12,6 +15,12 @@ public class PurchaseOrderDetailService {
 
     @Autowired
     private PurchaseOrderDetailRepository repository;
+    @Autowired
+    private PurchaseOrderRepository purchaseorderrepository;
+    @Autowired
+    private InventoryService inventoryservice;
+
+
 
     public List<PurchaseOrderDetail> findAll() {
         return repository.findAll();
@@ -32,4 +41,29 @@ public class PurchaseOrderDetailService {
        return   repository.findByOrderid(orderId);
     }
 
+
+    @Transactional
+    public void deletePurchaseOrderDetailAndUpdate(Long ordetailid) {
+        //
+        PurchaseOrderDetail detail = repository.findById(ordetailid)
+                .orElseThrow(() -> new IllegalArgumentException("订单明细未找到，ID: "));
+
+        //减少库存
+        inventoryservice.updateInventory(detail.getProductid(), detail.getProductname(), detail.getQuantity(),"decrease");
+        //更新主订单金额
+        PurchaseOrder order = purchaseorderrepository.findById(detail.getOrderid())
+                .orElseThrow(() -> new IllegalArgumentException("订单未找到 " ));
+
+         List<PurchaseOrderDetail> detailList = repository.findByOrderid(detail.getOrderid());
+         if (detailList.size()>1){
+             order.setOrdertotalamount(order.getOrdertotalamount().subtract(detail.getUnitprice()));
+             purchaseorderrepository.save(order);
+         }else{
+
+             purchaseorderrepository.deleteById(detail.getOrderid());
+         }
+         //删除明细
+        repository.deleteById(ordetailid);
+
+    }
 }

@@ -30,6 +30,12 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.83'
     implementation 'org.apache.poi:poi:5.2.3'
     implementation 'org.apache.poi:poi-ooxml:5.2.3'
+// SLF4J 核心库
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+// 选择日志实现（以下示例使用 Logback，也可以选择其他实现）
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+
+
 
 
 

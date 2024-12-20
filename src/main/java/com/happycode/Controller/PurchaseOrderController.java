@@ -5,7 +5,10 @@ import com.happycode.model.PurchaseOrder;
 import com.happycode.model.PurchaseOrderRequest;
 import com.happycode.model.SearchCriteria;
 import com.happycode.service.PurchaseOrderService;
+import com.happycode.utils.InsufficientStockException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,8 +48,17 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deletePurchaseOrder(@PathVariable Long id) {
-        service.deleteById(id);
-        return "Purchase order with ID " + id + " has been deleted.";
+    public ResponseEntity<String> deletePurchaseOrder(@PathVariable Long id) {
+        try {
+            service.deleteOrderWithDetails(id);
+            return ResponseEntity.ok("订单编号 " + id + " 已成功删除。");
+        } catch (InsufficientStockException ex) {
+            // 捕获库存不足异常，返回 400 错误
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (Exception ex) {
+            // 捕获其他异常，返回 500 错误
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务器内部错误：" + ex.getMessage());
+        }
     }
+
 }
