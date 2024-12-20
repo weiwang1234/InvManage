@@ -17,7 +17,10 @@ public class PartnerService {
 
     // 获取所有合作方
     public List<Partner> getAllPartners() {
-        return partnerRepository.findByPartnerstatus("1");  // 查询 partnerstatus 为 '1' 的数据
+        return partnerRepository.findByPartnerstatusAndPartnertype("1","1");  // 查询 partnerstatus 为 '1' 的数据
+    }
+    public List<Partner> getAllpurchasePartners() {
+        return partnerRepository.findByPartnerstatusAndPartnertype("1","1");  // 查询 partnerstatus 为 '1' 的数据
     }
 
     // 根据 id 查找合作方

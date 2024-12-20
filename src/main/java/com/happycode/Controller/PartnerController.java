@@ -23,6 +23,11 @@ public class PartnerController {
     public List<Partner> getAllPartners() {
         return partnerService.getAllPartners();
     }
+    @PostMapping("/getpurchaseAll")
+    public List<Partner> getpurchasePartners() {
+        return partnerService.getAllpurchasePartners();
+    }
+
 
     // 根据 id 获取合作方（POST 请求）
     @PostMapping("/getById")
