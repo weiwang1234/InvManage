@@ -2,6 +2,7 @@ package com.happycode.Controller;
 
 import com.happycode.model.Order;
 import com.happycode.model.PurchaseOrder;
+import com.happycode.model.PurchaseOrderRequest;
 import com.happycode.model.SearchCriteria;
 import com.happycode.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,9 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/add")
-    public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder purchaseOrder) {
-        return service.save(purchaseOrder);
+    public String addPurchaseOrder(@RequestBody PurchaseOrderRequest purchaseorderrequest) {
+         service.createOrder(purchaseorderrequest);
+        return "订单添加成功";
     }
 
     @PostMapping("/update")

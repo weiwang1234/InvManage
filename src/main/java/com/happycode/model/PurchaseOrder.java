@@ -14,7 +14,7 @@ public class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderid;
 
-    private String orderparid;
+    private Long orderparid;
 
     private String orderparname;
 
