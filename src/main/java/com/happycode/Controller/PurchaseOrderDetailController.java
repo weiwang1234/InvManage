@@ -52,7 +52,7 @@ public class PurchaseOrderDetailController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception ex) {
             // 捕获其他异常，返回 500 错误
-            log.error("删除订单明细时发生服务器内部错误", ex);
+            log.error("删除订单明细时发生服务器内部错误{}", ex.getMessage(),ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务器内部错误：" + ex.getMessage());
         }
     }

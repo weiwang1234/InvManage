@@ -3,6 +3,9 @@ package com.happycode.Controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.happycode.service.OrderService;
+import com.happycode.service.export.ExportService;
+import com.happycode.service.export.ExportServiceManager;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/exports")
 public class ExportExcelController {
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ExportServiceManager exportServiceManager;
+
     @PostMapping("/exportordersquery")
     public ResponseEntity<byte[]> exportOrdersToExcel(@RequestBody JSONObject request) {
         try {
@@ -62,24 +69,27 @@ public class ExportExcelController {
         }
     }
 
-    private JSONArray getOrders(JSONObject request) {
-        // 模拟生成 JSON 数据
-        JSONArray orders = new JSONArray();
+    //通用导出方法
+    @PostMapping("/{exportType}")
+    public ResponseEntity<byte[]> exportData(@PathVariable("exportType") String exportType, @RequestBody JSONObject request) {
+        try {
+            // 根据 exportType 获取对应的导出服务
+            ExportService exportService = exportServiceManager.getExportService(exportType);
+            if (exportService == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
 
-        JSONObject order1 = new JSONObject();
-        order1.put("orderId", "1");
-        order1.put("customerName", "客户A");
-        order1.put("totalAmount", 123.45);
+            // 获取导出数据
+            ExportService.ExportData exportData = exportService.getExportData(request);
 
-        JSONObject order2 = new JSONObject();
-        order2.put("orderId", "2");
-        order2.put("customerName", "客户B");
-        order2.put("totalAmount", 678.90);
-
-        orders.add(order1);
-        orders.add(order2);
-
-        return orders;
+            // 调用工具类生成 Excel
+            return com.happycode.export.util.ExcelExportUtil.exportToExcel(exportData.getSheetName(), exportData.getHeaders(), exportData.getData());
+        } catch (Exception e) {
+            log.error("导出报表失败{}{}", e.getMessage(), exportType, e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
-}
+    }
+
+
 
