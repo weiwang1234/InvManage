@@ -5,6 +5,7 @@ import com.happycode.repository.PurchaseOrderDetailRepository;
 import com.happycode.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -76,5 +77,11 @@ public class PurchaseOrderService {
         purchaseOrderDetailRepository.deleteByOrderid(orderId);
         // 删除主订单
         repository.deleteById(orderId);
+    }
+
+    public List<PurchaseOrderSum> getPurchaseOrderssum(SearchCriteria searchcriteria) {
+        return repository.findPurchaseOrders(searchcriteria.getCustomerName(),
+                searchcriteria.getStartDate(),
+                searchcriteria.getEndDate());
     }
 }

@@ -1,7 +1,9 @@
 package com.happycode.service;
 
+import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrder;
 import com.happycode.model.PurchaseOrderDetail;
+import com.happycode.model.SearchCriteria;
 import com.happycode.repository.PurchaseOrderDetailRepository;
 import com.happycode.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,4 +68,11 @@ public class PurchaseOrderDetailService {
         repository.deleteById(ordetailid);
 
     }
+
+    public List<OrderDetailSummary> getOrderDetailSummary(SearchCriteria request) {
+        String startDate = request.getStartDate();  // 直接使用 String 类型的日期
+        String endDate = request.getEndDate();      // 直接使用 String 类型的日期
+        return repository.getOrderDetailSummary(request.getOrderparid(), startDate, endDate);
+    }
+
 }

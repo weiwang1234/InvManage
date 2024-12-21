@@ -1,9 +1,6 @@
 package com.happycode.Controller;
 
-import com.happycode.model.Order;
-import com.happycode.model.PurchaseOrder;
-import com.happycode.model.PurchaseOrderRequest;
-import com.happycode.model.SearchCriteria;
+import com.happycode.model.*;
 import com.happycode.service.PurchaseOrderService;
 import com.happycode.utils.InsufficientStockException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +56,11 @@ public class PurchaseOrderController {
             // 捕获其他异常，返回 500 错误
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务器内部错误：" + ex.getMessage());
         }
+    }
+
+    @PostMapping("/getPurchaseOrderssum")
+    public List<PurchaseOrderSum> getPurchaseOrderssum(@RequestBody SearchCriteria request) {
+        return service.getPurchaseOrderssum(request);
     }
 
 }

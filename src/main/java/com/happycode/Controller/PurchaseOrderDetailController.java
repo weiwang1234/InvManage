@@ -1,6 +1,8 @@
 package com.happycode.Controller;
 
+import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrderDetail;
+import com.happycode.model.SearchCriteria;
 import com.happycode.service.PurchaseOrderDetailService;
 import com.happycode.utils.InsufficientStockException;
 import lombok.extern.slf4j.Slf4j;
@@ -58,5 +60,9 @@ public class PurchaseOrderDetailController {
     @PostMapping("/getorderid/{id}")
     public List<PurchaseOrderDetail> findByOrderid(@PathVariable Long id) {
         return service.findByOrderid(id);
+    }
+    @PostMapping("/getOrderDetailSummary")
+    public   List<OrderDetailSummary> getOrderDetailSummary(@RequestBody SearchCriteria searchcriteria) {
+        return service.getOrderDetailSummary(searchcriteria);
     }
 }
