@@ -1,18 +1,24 @@
 package com.happycode.service;
 
 import com.happycode.model.ProductProcessingConfig;
+import com.happycode.model.ProductProcessingConfigRequest;
 import com.happycode.repository.ProductProcessingConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
+import com.happycode.repository.ProductProcessingConfigDetailRepository;
+import com.happycode.model.ProductProcessingConfigDetail;
 @Service
 public class ProductProcessingConfigService {
 
     @Autowired
     private ProductProcessingConfigRepository repository;
+    @Autowired
+    private ProductProcessingConfigDetailRepository ConfigDetailrepository;
+
 
     // 创建配置
     public ProductProcessingConfig createConfig(ProductProcessingConfig config) {
@@ -45,5 +51,18 @@ public class ProductProcessingConfigService {
             return true;
         }
         return false; // 如果配置不存在，则返回 false
+    }
+    @Transactional
+    public ProductProcessingConfig createconfiganddetail(ProductProcessingConfigRequest request) {
+
+        ProductProcessingConfig savedConfig = repository.save(request.getProductprocessingconfig());
+
+        // 保存详情配置
+        for (ProductProcessingConfigDetail detail : request.getProductprocessingconfigdetail()) {
+            detail.setProductid(savedConfig.getProductid()); // 将主配置ID赋值给详情
+            detail.setProductname(savedConfig.getProductname());
+            ConfigDetailrepository.save(detail);
+        }
+        return savedConfig;
     }
 }

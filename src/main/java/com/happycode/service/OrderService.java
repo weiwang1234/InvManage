@@ -133,8 +133,7 @@ public class OrderService {
     @Transactional
     public List<Order> findByOrderDateOrInsertTime() {
         String today = LocalDate.now().toString(); // 转换为 yyyy-MM-dd 格式
-        List<Order> orders = orderRepository.findByOrderDateOrInsertTime(today);
-        return orders;
+        return orderRepository.findByOrderDateOrInsertTime(today);
 
     }
 

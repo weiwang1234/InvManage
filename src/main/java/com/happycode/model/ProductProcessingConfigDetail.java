@@ -18,9 +18,4 @@ public class ProductProcessingConfigDetail {
     private String opuputproudctname; // 产出产品名称
     private String outputtype; // 产出类型（1比例,2个数）
     private Double outputcount; // 产出数值
-
-    private Date insertime; // 录入时间
-
-    private Date updatetime; // 更新时间
-
 }

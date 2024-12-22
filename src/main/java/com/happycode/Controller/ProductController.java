@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -53,5 +54,10 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PostMapping("/getproduct/{productid}")
+    public List<Product> getActiveProductsExcludingId(@PathVariable("productid") Long excludedId) {
+        return productService.getActiveProductsExcludingId(excludedId);
     }
 }

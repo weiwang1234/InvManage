@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.happycode.model.ProductProcessingConfigRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +20,8 @@ public class ProductProcessingConfigController {
 
     // 创建配置 (POST 请求)
     @PostMapping("/create")
-    public ResponseEntity<ProductProcessingConfig> createConfig(@RequestBody ProductProcessingConfig config) {
-        ProductProcessingConfig createdConfig = service.createConfig(config);
+    public ResponseEntity<ProductProcessingConfig> createConfig(@RequestBody ProductProcessingConfigRequest productprocessingconfigrequest) {
+        ProductProcessingConfig createdConfig = service.createconfiganddetail(productprocessingconfigrequest);
         return new ResponseEntity<>(createdConfig, HttpStatus.CREATED);
     }
 
@@ -55,4 +56,5 @@ public class ProductProcessingConfigController {
         return deleted ? ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
 }

@@ -4,6 +4,8 @@ import com.happycode.model.Product;
 import com.happycode.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +56,9 @@ public class ProductService {
 
         return false; // 如果找不到产品，返回 false
 
+    }
+
+    public List<Product> getActiveProductsExcludingId(Long excludedId) {
+        return productRepository.findByProductstatusAndProductidNot("1", excludedId);
     }
 }
