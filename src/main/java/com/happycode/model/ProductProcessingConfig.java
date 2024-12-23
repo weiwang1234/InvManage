@@ -12,7 +12,7 @@ public class ProductProcessingConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long processingconfigid;
-
+    @Column(name = "productid")
     private Long productid;
 
     private String productname;

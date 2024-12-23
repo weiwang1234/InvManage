@@ -44,10 +44,13 @@ public class ProductProcessingConfigService {
         return null; // 如果配置不存在，则返回 null
     }
 
-    // 删除配置
+    // 删除配置及关联信息
+    @Transactional
     public boolean deleteConfig(Long id) {
         if (repository.existsById(id)) {
+            Optional<ProductProcessingConfig> proconfig =   repository.findById(id);
             repository.deleteById(id);
+            ConfigDetailrepository.deleteByProductid(proconfig.get().getProductid());
             return true;
         }
         return false; // 如果配置不存在，则返回 false
@@ -55,14 +58,35 @@ public class ProductProcessingConfigService {
     @Transactional
     public ProductProcessingConfig createconfiganddetail(ProductProcessingConfigRequest request) {
 
-        ProductProcessingConfig savedConfig = repository.save(request.getProductprocessingconfig());
+        List<ProductProcessingConfig> configList = repository.findByProductid(request.getProductprocessingconfig().getProductid());
+        ProductProcessingConfig savedConfig  =null;
+        Long  productid = null;
+        String  productname  ="";
+        if(configList.size()<1){
+            savedConfig = repository.save(request.getProductprocessingconfig());
+            productid = savedConfig.getProductid();
+            productname = savedConfig.getProductname();
+        }else{
+            productid=request.getProductprocessingconfig().getProductid();
+            productname=request.getProductprocessingconfig().getProductname();
+
+        }
 
         // 保存详情配置
         for (ProductProcessingConfigDetail detail : request.getProductprocessingconfigdetail()) {
-            detail.setProductid(savedConfig.getProductid()); // 将主配置ID赋值给详情
-            detail.setProductname(savedConfig.getProductname());
+            detail.setProductid(productid); // 将主配置ID赋值给详情
+            detail.setProductname(productname);
             ConfigDetailrepository.save(detail);
         }
         return savedConfig;
     }
+
+    public void deleteByProductid(Long productid) {
+        // 删除所有与该产品相关的配置
+        List<ProductProcessingConfig> configs = repository.findByProductid(productid);
+        if (!configs.isEmpty()) {
+            repository.deleteAll(configs);  // 批量删除
+        }
+    }
 }
+
