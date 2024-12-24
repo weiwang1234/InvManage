@@ -11,12 +11,12 @@ public class PurchaseOrderSummaryExprot {
    private String orderparname;
    // private Long productid;
    private String productname;
-    private Long quantity;
+    private double quantity;
     private BigDecimal unitprice;
 
     // 符合查询字段顺序和类型的构造函数
     public PurchaseOrderSummaryExprot( String orderparname,
-                                      String productname, Long quantity, BigDecimal unitprice) {
+                                      String productname, double quantity, BigDecimal unitprice) {
        // this.ordetailid = ordetailid;
         this.orderparname = orderparname;
        // this.productid = productid;

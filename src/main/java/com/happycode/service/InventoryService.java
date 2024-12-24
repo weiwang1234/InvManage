@@ -61,7 +61,7 @@ public class InventoryService {
 
     //-----------------------------------------------------------新添加工具方法---------------------------------------------
 
-    public void updateInventory(Long productId, String productName, int quantity, String operation) {
+    public void updateInventory(Long productId, String productName,double quantity, String operation) {
         Optional<Inventory> optionalInventory = Optional.ofNullable(inventoryRepository.findByProductid(productId));
         Inventory inventory;
         if (optionalInventory.isPresent()) {

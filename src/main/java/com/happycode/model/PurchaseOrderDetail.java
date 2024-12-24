@@ -25,7 +25,7 @@ public class PurchaseOrderDetail {
 
     private String productname;
 
-    private int quantity;
+    private double quantity;
 
     private BigDecimal unitprice;
 

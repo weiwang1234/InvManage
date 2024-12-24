@@ -14,8 +14,8 @@ public class ProductProcessingConfigDetail {
     private Long configdetailid; // 产品配置id
     private Long productid; // 产品id
     private String productname; // 产品名称
-    private Long opuputproudctid; // 产出产品id
-    private String opuputproudctname; // 产出产品名称
+    private Long outputproductid; // 产出产品id
+    private String outputproductname; // 产出产品名称
     private String outputtype; // 产出类型（1比例,2个数）
     private Double outputcount; // 产出数值
 }
