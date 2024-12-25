@@ -14,8 +14,8 @@ public interface ProductProcessingRepository extends JpaRepository<ProductProces
     @Query("SELECT pd FROM ProductProcessing pd WHERE "
             + "(:startDate IS NULL OR :startDate = '' OR pd.processingdate >= :startDate) "
             + "AND (:endDate IS NULL OR :endDate = '' OR pd.processingdate <= :endDate) "
-            + "AND (:productname IS NULL OR :productname = '' OR pd.productname LIKE %:productname%)")
+            + "AND (:productname IS NULL OR :productname = '' OR pd.productname LIKE %:name%)")
     List<ProductProcessing> findByConditions(@Param("startDate") String startDate,
                                              @Param("endDate") String endDate,
-                                             @Param("productname") String productname);
+                                             @Param("name") String name);
 }

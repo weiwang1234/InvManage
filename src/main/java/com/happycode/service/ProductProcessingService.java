@@ -81,7 +81,7 @@ public class ProductProcessingService {
 
     //getCustomerName 为产品名称
     public List<ProductProcessing> getFilteredProductProcessing(SearchCriteria filter) {
-        return productProcessingRepository.findByConditions(filter.getStartDate(), filter.getEndDate(), filter.getProductname());
+        return productProcessingRepository.findByConditions(filter.getStartDate(), filter.getEndDate(), filter.getName());
 
     }
 }
