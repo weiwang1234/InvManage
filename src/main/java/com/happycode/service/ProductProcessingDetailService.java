@@ -42,4 +42,13 @@ public class ProductProcessingDetailService {
     public void deleteProductProcessingDetail(Long id) {
         repository.deleteById(id);
     }
+
+    public List<ProductProcessingDetail> getAllProductDetails(Long processingid) {
+        return repository.findByProcessingid(processingid);
+    }
+
+
+
+
+
 }

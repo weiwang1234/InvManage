@@ -78,7 +78,7 @@ public class InventoryService {
         } else if ("decrease".equalsIgnoreCase(operation)) {
             if (inventory.getQuantity() < quantity) {
                 throw new InsufficientStockException(
-                         "["+productName+"]库存不足,无法删除 "
+                         "["+productName+"]库存不足 "
                 );
             }
             inventory.setQuantity(inventory.getQuantity() - quantity); // 减少库存

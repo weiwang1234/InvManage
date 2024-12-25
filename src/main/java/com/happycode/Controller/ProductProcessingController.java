@@ -1,7 +1,7 @@
 package com.happycode.Controller;
 
-import com.happycode.model.ProductProcessing;
-import com.happycode.model.ProductProcessingRequest;
+import com.happycode.model.*;
+import com.happycode.service.ProductProcessingDetailService;
 import com.happycode.service.ProductProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,8 @@ public class ProductProcessingController {
 
     @Autowired
     private ProductProcessingService productProcessingService;
+    @Autowired
+    private ProductProcessingDetailService productprocessingdetailservice;
 
     // 查询所有产品加工记录
     @PostMapping("/getAll")
@@ -49,4 +51,16 @@ public class ProductProcessingController {
         productProcessingService.deleteProductProcessing(id);
         return ResponseEntity.noContent().build();
     }
+
+    //查看详情
+    @PostMapping("/getproductdetail")
+    public List<ProductProcessingDetail> getAllProductdetail(@RequestBody Long processingid) {
+        return productprocessingdetailservice.getAllProductDetails(processingid);
+    }
+
+    @PostMapping("/getFilteredProductProcessing")
+    public List<ProductProcessing> getFilteredProductProcessing(@RequestBody SearchCriteria request) {
+        return productProcessingService.getFilteredProductProcessing(request);
+    }
+
 }

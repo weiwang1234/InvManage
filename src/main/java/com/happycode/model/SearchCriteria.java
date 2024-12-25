@@ -7,6 +7,8 @@ public class SearchCriteria {
     private String endDate;   // 结束日期 (格式 yyyy-MM-dd)
     private String customerName; // 客户姓名
     private long orderparid; // 客户id
+    private String productname; // 客户id
+
 
 
 }
