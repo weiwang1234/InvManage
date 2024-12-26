@@ -1,7 +1,8 @@
 package com.happycode.Controller;
 
-import com.happycode.model.MonthEndStock;
-import com.happycode.service.MonthEndStockService;
+import com.happycode.model.MonthEndStockDetail;
+import com.happycode.model.MonthendStock;
+import com.happycode.service.MonthEndStockDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +11,21 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/monthendstock")
-public class MonthEndStockController {
+@RequestMapping("/monthstockdetailstock")
+public class MonthendStockDetailController {
 
     @Autowired
-    private MonthEndStockService service;
+    private MonthEndStockDetailService service;
 
     // 创建新的库存记录
     @PostMapping("/create")
-    public MonthEndStock create(@RequestBody MonthEndStock monthEndStock) {
-        return service.createMonthEndStock(monthEndStock);
+    public MonthEndStockDetail create(@RequestBody  MonthendStock monthendStock) {
+        return service.createMonthEndStock(monthendStock);
     }
 
     // 更新库存记录
     @PutMapping("/update")
-    public MonthEndStock update(@RequestBody MonthEndStock monthEndStock) {
+    public MonthEndStockDetail update(@RequestBody MonthEndStockDetail monthEndStock) {
         return service.updateMonthEndStock(monthEndStock);
     }
 
@@ -36,13 +37,13 @@ public class MonthEndStockController {
 
     // 根据产品ID和盘点月份查询库存记录
     @GetMapping("/get/{productId}/{stockMonth}")
-    public Optional<MonthEndStock> getByProductIdAndStockMonth(@PathVariable Long productId, @PathVariable String stockMonth) {
+    public Optional<MonthEndStockDetail> getByProductIdAndStockMonth(@PathVariable Long productId, @PathVariable String stockMonth) {
         return service.getMonthEndStock(productId, stockMonth);
     }
 
     // 根据盘点月份查询所有库存记录
     @GetMapping("/get/{stockMonth}")
-    public List<MonthEndStock> getAllByStockMonth(@PathVariable String stockMonth) {
+    public List<MonthEndStockDetail> getAllByStockMonth(@PathVariable String stockMonth) {
         return service.getAllByStockMonth(stockMonth);
     }
 }

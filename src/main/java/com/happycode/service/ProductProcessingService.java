@@ -84,4 +84,9 @@ public class ProductProcessingService {
         return productProcessingRepository.findByConditions(filter.getStartDate(), filter.getEndDate(), filter.getName());
 
     }
+
+    public List<ProductProcessing> getProcessingSum(String  month) {
+        return productProcessingRepository.getProductProcessingSum(month);
+
+    }
 }

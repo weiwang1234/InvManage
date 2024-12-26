@@ -18,4 +18,11 @@ public interface ProductProcessingRepository extends JpaRepository<ProductProces
     List<ProductProcessing> findByConditions(@Param("startDate") String startDate,
                                              @Param("endDate") String endDate,
                                              @Param("name") String name);
+
+
+
+    @Query(value = "select    productid ,productname ,sum(quantity)  as quantity from  productprocessing  where " +
+            "  processingdate  like CONCAT(:month, '%')   group  by   productid ,productname ",
+            nativeQuery = true)
+    List<ProductProcessing> getProductProcessingSum(@Param("month") String month);
 }

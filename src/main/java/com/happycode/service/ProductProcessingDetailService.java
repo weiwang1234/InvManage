@@ -47,6 +47,10 @@ public class ProductProcessingDetailService {
         return repository.findByProcessingid(processingid);
     }
 
+    public List<ProductProcessingDetail> getroductProcessingDetailSummary(String month) {
+        return repository.getroductProcessingDetailSummary(month);
+    }
+
 
 
 

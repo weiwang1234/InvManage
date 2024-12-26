@@ -16,7 +16,7 @@ public class Orderutils {
     public void updateInventoryForSale(List<OrderDetail> orderdetail) {
         for (OrderDetail detail : orderdetail) {
             long productId = detail.getProductid();
-            int quantitySold = detail.getQuantity();
+            double quantitySold = detail.getQuantity();
 
             // 获取当前库存
             Inventory inventory = inventoryRepository.findByProductid(productId);

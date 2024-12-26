@@ -67,7 +67,7 @@ public class OrderService {
         // 恢复库存
         for (OrderDetail detail : orderDetails) {
             long productId = detail.getProductid();
-            int quantitySold = detail.getQuantity();
+            double quantitySold = detail.getQuantity();
 
             // 查找库存记录
             Inventory inventory = inventoryRepository.findByProductid(productId);
@@ -99,7 +99,7 @@ public class OrderService {
         // 遍历订单详情，检查库存是否充足
         for (OrderDetail detail : orderDetails) {
             long productId = detail.getProductid();
-            int quantitySold = detail.getQuantity();
+            double quantitySold = detail.getQuantity();
 
             // 获取当前库存
             Inventory inventory = inventoryRepository.findByProductid(productId);
@@ -112,7 +112,7 @@ public class OrderService {
         // 更新库存
         for (OrderDetail detail : orderDetails) {
             long productId = detail.getProductid();
-            int quantitySold = detail.getQuantity();
+            double quantitySold = detail.getQuantity();
 
             Inventory inventory = inventoryRepository.findByProductid(productId);
             inventory.setQuantity(inventory.getQuantity() - quantitySold);

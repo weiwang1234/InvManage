@@ -1,6 +1,7 @@
 package com.happycode.service;
 
 import com.happycode.model.Inventory;
+import com.happycode.model.MonthEnd.OderDetailSummary;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
 import com.happycode.repository.InventoryRepository;
@@ -62,9 +63,9 @@ public class OrderDetailService {
         if (orderdetail.size()>1){
             Order order = orderrepository.findById(orderid)
                     .orElseThrow(() -> new RuntimeException("订单不存在！"));
-            order.setOrdertotalamount(order.getOrdertotalamount()-orderDetail.getUnitprice());
+            order.setOrdertotalamount(order.getOrdertotalamount()-orderDetail.getUnitprice().doubleValue());
             orderrepository.save(order);
-            int quantity = orderDetail.getQuantity();
+            double quantity = orderDetail.getQuantity();
 
             // 查找库存记录
             Inventory inventory = inventoryRepository.findByProductid(orderDetail.getProductid());
@@ -88,5 +89,10 @@ public class OrderDetailService {
     public void deleteOrderidOrderDetail(Long orderid) {
         orderDetailRepository.deleteById(orderid);
     }
+    public List<OderDetailSummary> getMonthlyOrderSummary(String date) {
+        return orderDetailRepository.getMonthlyOrderSummary(date);
+    }
+
+
 
 }

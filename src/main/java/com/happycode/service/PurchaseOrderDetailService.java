@@ -1,5 +1,6 @@
 package com.happycode.service;
 
+import com.happycode.model.MonthEnd.PurchaseSummary;
 import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrder;
 import com.happycode.model.PurchaseOrderDetail;
@@ -74,5 +75,10 @@ public class PurchaseOrderDetailService {
         String endDate = request.getEndDate();      // 直接使用 String 类型的日期
         return repository.getOrderDetailSummary(request.getOrderparid(), startDate, endDate);
     }
+    // 汇总某月产品的进货信息
+    public List<PurchaseSummary> getMonthlyPurchaseSummary(String month) {
+        return repository.getMonthlyPurchaseSummary(month);
+    }
+
 
 }

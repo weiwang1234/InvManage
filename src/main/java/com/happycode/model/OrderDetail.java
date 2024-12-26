@@ -16,8 +16,8 @@ public  class  OrderDetail {
     private Long orderid;   // 订单编号
     private Long productid; // 产品编号
     private String productname; // 产品名称
-    private Integer quantity; // 商品数量
-    private double unitprice; // 单价
+    private double quantity; // 商品数量
+    private BigDecimal unitprice; // 单价
     private String orderdate; // 单价
     private Long orderparid; // 订单用户id
     private String orderparname; // 订单用户名称
