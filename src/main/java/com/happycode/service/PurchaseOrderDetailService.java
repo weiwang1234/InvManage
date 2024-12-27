@@ -8,6 +8,7 @@ import com.happycode.model.SearchCriteria;
 import com.happycode.repository.PurchaseOrderDetailRepository;
 import com.happycode.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -80,5 +81,8 @@ public class PurchaseOrderDetailService {
         return repository.getMonthlyPurchaseSummary(month);
     }
 
+    public List<PurchaseOrderDetail> findByOrderDate(String month) {
+        return repository.findByOrderDate(month);
+    }
 
 }

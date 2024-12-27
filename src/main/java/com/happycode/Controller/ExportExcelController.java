@@ -2,7 +2,8 @@ package com.happycode.Controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.happycode.service.OrderService;
+import com.happycode.model.*;
+import com.happycode.service.*;
 import com.happycode.service.export.ExportService;
 import com.happycode.service.export.ExportServiceManager;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 @Slf4j
 @RestController
 @RequestMapping("/exports")
@@ -25,6 +29,24 @@ public class ExportExcelController {
 
     @Autowired
     private ExportServiceManager exportServiceManager;
+    @Autowired
+    private OrderDetailService OrderDetailService;
+    @Autowired
+    private PurchaseOrderDetailService purchaseorderdetailservice;
+    @Autowired
+    private ProductProcessingDetailService productprocessingdetailservice;
+    @Autowired
+    private ProductProcessingService productprocessingservice;
+    @Autowired
+    private MonthEndStockDetailService monthendstockdetailservice;
+    @Autowired
+    private ProfitStatementService profitstatementservice;
+    @Autowired
+    private OtherExpensesService otherexpensesservice;
+
+
+
+
 
     @PostMapping("/exportordersquery")
     public ResponseEntity<byte[]> exportOrdersToExcel(@RequestBody JSONObject request) {
@@ -34,7 +56,7 @@ public class ExportExcelController {
 
             // 创建 Excel 文件
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("订单数据");
+            Sheet sheet = workbook.createSheet("卖出订单数据");
 
             // 设置表头
             Row headerRow = sheet.createRow(0);
@@ -89,7 +111,194 @@ public class ExportExcelController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping("/ProfitStatement")
+    public ResponseEntity<byte[]> exportProfitStatement(@RequestParam String profitmonth) throws IOException {
+
+        //卖出明细
+         List<OrderDetail> orderdetail = OrderDetailService.findByOrderDate(profitmonth);
+        //进货明细
+        List<PurchaseOrderDetail> purchaseorderdetail = purchaseorderdetailservice.findByOrderDate(profitmonth);
+//        List<ProductProcessingDetail> productprocessingdetails =productprocessingdetailservice.findByProductProcessingDetailDate(profitmonth);
+//        List<ProductProcessing> productprocessings =productprocessingservice.findByProductProcessingDate(profitmonth);
+        List<MonthEndStockDetail> monthendstockdetails =monthendstockdetailservice.getAllByStockMonth(profitmonth.substring(0, profitmonth.length() - 1));
+
+        List<OtherExpenses> otherexpensesservices =   otherexpensesservice.findByOtherExpensesDate(profitmonth);
+
+
+        //盈利表
+        Optional<ProfitStatement> ProfitStatements = profitstatementservice.getProfitStatementByMonth(profitmonth.substring(0, profitmonth.length() - 1));
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        // 创建第一个 sheet
+        Sheet sheet1 = workbook.createSheet("进货明细");
+
+        // 填充第一个 sheet 数据
+        Row headerRow1 = sheet1.createRow(0);
+        headerRow1.createCell(0).setCellValue("日期");
+        headerRow1.createCell(1).setCellValue("进货来源方");
+        headerRow1.createCell(2).setCellValue("产品名称");
+        headerRow1.createCell(3).setCellValue("产品数量");
+        headerRow1.createCell(4).setCellValue("产品金额");
+
+        int rowNum = 1;
+        for (PurchaseOrderDetail PurchaseOrderDetail : purchaseorderdetail) {
+            Row row = sheet1.createRow(rowNum++);
+            row.createCell(0).setCellValue(PurchaseOrderDetail.getOrderdate());
+            row.createCell(1).setCellValue(PurchaseOrderDetail.getOrderparname());
+            row.createCell(2).setCellValue(PurchaseOrderDetail.getProductname());
+            row.createCell(3).setCellValue(PurchaseOrderDetail.getQuantity());
+            row.createCell(4).setCellValue(PurchaseOrderDetail.getUnitprice().doubleValue());
+        }
+
+        // 创建第二个 sheet
+        Sheet sheet2 = workbook.createSheet("卖货明细");
+
+        // 填充第二个 sheet 数据
+        Row headerRow2 = sheet2.createRow(0);
+        headerRow2.createCell(0).setCellValue("日期");
+        headerRow2.createCell(1).setCellValue("客户名称");
+        headerRow2.createCell(2).setCellValue("产品数量");
+        headerRow2.createCell(3).setCellValue("产品金额");
+
+
+         rowNum = 1;
+        for (OrderDetail orderdetailm : orderdetail) {
+            Row row = sheet2.createRow(rowNum++);
+            row.createCell(0).setCellValue(orderdetailm.getOrderdate());
+            row.createCell(1).setCellValue(orderdetailm.getOrderparname());
+            row.createCell(2).setCellValue(orderdetailm.getQuantity());
+            row.createCell(3).setCellValue(orderdetailm.getUnitprice().doubleValue());
+
+        }
+
+//        // 创建第三个 sheet
+//        Sheet sheet3 = workbook.createSheet("加工明细");
+//
+//        // 填充第三个 sheet 数据
+//        Row headerRow3 = sheet3.createRow(0);
+//        headerRow3.createCell(0).setCellValue("日期");
+//        headerRow3.createCell(1).setCellValue("产品名称");
+//        headerRow3.createCell(2).setCellValue("加工数量");
+//
+//
+//        rowNum = 1;
+//        for (ProductProcessing productprocessing : productprocessings) {
+//            Row row = sheet3.createRow(rowNum++);
+//            row.createCell(0).setCellValue(productprocessing.getProcessingdate());
+//            row.createCell(1).setCellValue(productprocessing.getProductname());
+//            row.createCell(2).setCellValue(productprocessing.getQuantity());
+//        }
+//
+//
+//        // 创建第四个 sheet
+//        Sheet sheet4 = workbook.createSheet("加工产出明细");
+//
+//        // 填充第四个 sheet 数据
+//        Row headerRow4 = sheet4.createRow(0);
+//        headerRow4.createCell(0).setCellValue("日期");
+//        headerRow4.createCell(1).setCellValue("产出产品名称");
+//        headerRow4.createCell(2).setCellValue("产出产品数据量");
+//
+//
+//        rowNum = 1;
+//        for (ProductProcessingDetail productprocessingdetail : productprocessingdetails) {
+//            Row row = sheet4.createRow(rowNum++);
+//            row.createCell(0).setCellValue(productprocessingdetail.getProcessingdetaildate());
+//            row.createCell(1).setCellValue(productprocessingdetail.getOutputproductname());
+//            row.createCell(2).setCellValue(productprocessingdetail.getOutputcount());
+//        }
+
+
+        // 创建第五个 sheet
+        Sheet sheet5 = workbook.createSheet("产品月底明细");
+
+        // 填充第四个 sheet 数据
+        Row headerRow5 = sheet5.createRow(0);
+        headerRow5.createCell(0).setCellValue("月份");
+        headerRow5.createCell(1).setCellValue("产品名称");
+        headerRow5.createCell(2).setCellValue("上月库存数量");
+        headerRow5.createCell(3).setCellValue("本月进货数量");
+        headerRow5.createCell(4).setCellValue("本月进货金额");
+        headerRow5.createCell(5).setCellValue("本月加工数量");
+        headerRow5.createCell(6).setCellValue("本月加工产出数量");
+        headerRow5.createCell(7).setCellValue("本月卖出数量");
+        headerRow5.createCell(8).setCellValue("本月卖出金额");
+        rowNum = 1;
+        for (MonthEndStockDetail monthendstockdetail : monthendstockdetails) {
+            Row row = sheet5.createRow(rowNum++);
+            row.createCell(0).setCellValue(monthendstockdetail.getStockmonth());
+            row.createCell(1).setCellValue(monthendstockdetail.getProductname());
+            row.createCell(2).setCellValue(monthendstockdetail.getLastmonthinventory());
+            row.createCell(3).setCellValue(monthendstockdetail.getMonthpurchases());
+            row.createCell(4).setCellValue(monthendstockdetail.getMonthpurchasesamount().doubleValue());
+            row.createCell(5).setCellValue(monthendstockdetail.getMonthprocessing());
+            row.createCell(6).setCellValue(monthendstockdetail.getMonthprocessedoutput());
+            row.createCell(7).setCellValue(monthendstockdetail.getMonthsoldquantity());
+            row.createCell(8).setCellValue(monthendstockdetail.getMonthsoldamount().doubleValue());
+
+        }
+
+
+        Sheet sheet6 = workbook.createSheet("其他支出明细");
+
+        // 填充第四个 sheet 数据
+        Row headerRow6 = sheet6.createRow(0);
+        headerRow6.createCell(0).setCellValue("月份");
+        headerRow6.createCell(1).setCellValue("支出名称");
+        headerRow6.createCell(2).setCellValue("支出备注");
+        headerRow6.createCell(3).setCellValue("支出金额");
+        rowNum = 1;
+        for (OtherExpenses OtherExpenses : otherexpensesservices) {
+            Row row = sheet6.createRow(rowNum++);
+            row.createCell(0).setCellValue(OtherExpenses.getOtherexpensesdate());
+            row.createCell(1).setCellValue(OtherExpenses.getOtherexpensesname());
+            row.createCell(2).setCellValue(OtherExpenses.getOtherexpensesremak());
+            row.createCell(3).setCellValue(OtherExpenses.getOtherexpensesamount().doubleValue());
+
+
+        }
+
+        Sheet sheet7 = workbook.createSheet("盈利表");
+
+        // 填充第四个 sheet 数据
+        Row headerRow7= sheet7.createRow(0);
+        headerRow7.createCell(0).setCellValue("月份");
+        headerRow7.createCell(1).setCellValue("进货支出");
+        headerRow7.createCell(2).setCellValue("其他支出");
+        headerRow7.createCell(3).setCellValue("收入");
+        headerRow7.createCell(4).setCellValue("净利润");
+
+        rowNum = 1;
+
+        Row row = sheet7.createRow(rowNum++);
+        row.createCell(0).setCellValue(ProfitStatements.get().getProfitmonth());
+        row.createCell(1).setCellValue(ProfitStatements.get().getPurchasingexpenses().doubleValue());
+        row.createCell(2).setCellValue(ProfitStatements.get().getOtherexpenses().doubleValue());
+        row.createCell(3).setCellValue(ProfitStatements.get().getSalesrevenue().doubleValue());
+        row.createCell(4).setCellValue(ProfitStatements.get().getNetprofit().doubleValue());
+
+
+
+
+
+
+        // 将 Excel 写入字节数组输出流
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        workbook.write(bos);
+        workbook.close();
+
+        byte[] fileContent = bos.toByteArray();
+
+        // 返回带有多个 sheet 的 Excel 文件
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profit_statement_" + profitmonth + ".xlsx")
+                .body(fileContent);
     }
+
+
+}
 
 
 

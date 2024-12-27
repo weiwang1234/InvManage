@@ -1,5 +1,6 @@
 package com.happycode.repository;
 
+import com.happycode.model.OrderDetail;
 import com.happycode.model.OtherExpenses;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,9 @@ public interface OtherExpensesRepository extends JpaRepository<OtherExpenses, Lo
 
     @Query("SELECT SUM(o.otherexpensesamount) FROM OtherExpenses o WHERE o.otherexpensesdate LIKE CONCAT(:month, '%')")
     BigDecimal findTotalOtherExpensesByMonth(@Param("month") String month);
+
+
+    @Query("SELECT od FROM OtherExpenses od WHERE  od.otherexpensesdate  LIKE :otherexpensesdate")
+    List<OtherExpenses> findByOtherExpensesDate(@Param("otherexpensesdate") String otherexpensesdate);
 
 }

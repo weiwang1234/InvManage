@@ -4,6 +4,7 @@ import com.happycode.model.MonthEnd.DeatilSummary;
 import com.happycode.model.ProductProcessingDetail;
 import com.happycode.repository.ProductProcessingDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +52,12 @@ public class ProductProcessingDetailService {
     public List<DeatilSummary> getroductProcessingDetailSummary(String month) {
         return repository.getroductProcessingDetailSummary(month);
     }
+
+    public List<ProductProcessingDetail> findByProductProcessingDetailDate(String month) {
+        return repository.findByProductProcessingDetailDate(month);
+    }
+
+
 
 
 

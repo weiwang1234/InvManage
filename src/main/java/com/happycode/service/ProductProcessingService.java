@@ -8,7 +8,6 @@ import com.happycode.model.SearchCriteria;
 import com.happycode.repository.ProductProcessingDetailRepository;
 import com.happycode.repository.ProductProcessingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -90,4 +89,9 @@ public class ProductProcessingService {
         return productProcessingRepository.getProductProcessingSum(month);
 
     }
+
+    public List<ProductProcessing> findByProductProcessingDate(String month) {
+        return productProcessingRepository.findByProductProcessingDate(month);
+    }
+
 }

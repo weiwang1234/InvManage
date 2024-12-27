@@ -22,7 +22,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "GROUP BY o.productid, o.productname")
     List<OderDetailSummary> getMonthlyOrderSummary(@Param("month") String month);
 
-
+    @Query("SELECT od FROM OrderDetail od WHERE od.orderdate LIKE :orderDate")
+    List<OrderDetail> findByOrderDate(@Param("orderDate") String orderDate);
 
 
 }

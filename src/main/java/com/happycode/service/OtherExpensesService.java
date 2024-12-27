@@ -52,4 +52,9 @@ public class OtherExpensesService {
     public BigDecimal findTotalOtherExpensesByMonth(String month) {
         return repository.findTotalOtherExpensesByMonth(month);
     }
+    public List<OtherExpenses> findByOtherExpensesDate(String month) {
+        return repository.findByOtherExpensesDate(month);
+    }
+
+
 }

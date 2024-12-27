@@ -4,6 +4,7 @@ import com.happycode.model.MonthEnd.DeatilSummary;
 import com.happycode.model.OrderDetail;
 import com.happycode.model.ProductProcessingConfig;
 import com.happycode.model.ProductProcessingDetail;
+import com.happycode.model.PurchaseOrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +20,9 @@ public interface ProductProcessingDetailRepository extends JpaRepository<Product
     @Query("select new com.happycode.model.MonthEnd.DeatilSummary( outputproductid ,outputproductname ,sum(outputcount) ) from ProductProcessingDetail    where  " +
             " processingdetaildate  like CONCAT(:month, '%')  group by   outputproductid ,outputproductname ")
     List<DeatilSummary> getroductProcessingDetailSummary(@Param("month") String month);
+
+    @Query("SELECT od FROM ProductProcessingDetail od WHERE od.processingdetaildate LIKE :detaildate")
+    List<ProductProcessingDetail> findByProductProcessingDetailDate(@Param("detaildate") String detaildate);
 
 
 }

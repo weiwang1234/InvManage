@@ -1,6 +1,7 @@
 package com.happycode.repository;
 
 import com.happycode.model.MonthEnd.PurchaseSummary;
+import com.happycode.model.OrderDetail;
 import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrderDetail;
 import com.happycode.model.PurchaseOrderSummaryExprot;
@@ -47,6 +48,9 @@ public interface PurchaseOrderDetailRepository extends JpaRepository<PurchaseOrd
             "WHERE p.orderdate LIKE CONCAT(:month, '%') " +
             "GROUP BY p.productid, p.productname")
     List<PurchaseSummary> getMonthlyPurchaseSummary(@Param("month") String month);
+
+    @Query("SELECT od FROM PurchaseOrderDetail od WHERE od.orderdate LIKE :orderDate")
+    List<PurchaseOrderDetail> findByOrderDate(@Param("orderDate") String orderDate);
 
 
 }

@@ -8,6 +8,7 @@ import com.happycode.repository.InventoryRepository;
 import com.happycode.repository.OrderDetailRepository;
 import com.happycode.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -93,6 +94,8 @@ public class OrderDetailService {
         return orderDetailRepository.getMonthlyOrderSummary(date);
     }
 
-
+    public List<OrderDetail> findByOrderDate(String orderDate) {
+        return orderDetailRepository.findByOrderDate(orderDate);
+    }
 
 }
