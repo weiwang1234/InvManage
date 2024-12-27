@@ -1,6 +1,7 @@
 package com.happycode.Controller;
 
 import com.happycode.model.ProfitStatement;
+import com.happycode.model.SearchCriteria;
 import com.happycode.service.ProfitStatementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/profitstatement")
+@RequestMapping("/profitstatement")
 public class ProfitStatementController {
 
     @Autowired
@@ -41,5 +42,10 @@ public class ProfitStatementController {
     public ResponseEntity<Void> deleteProfitStatement(@PathVariable String profitMonth) {
         profitStatementService.deleteProfitStatement(profitMonth);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/querySearch")
+    public List<ProfitStatement> getProfitStatements(@RequestBody SearchCriteria request) {
+        return profitStatementService.findByProfitmonthBetween(request.getStartDate(), request.getEndDate());
     }
 }

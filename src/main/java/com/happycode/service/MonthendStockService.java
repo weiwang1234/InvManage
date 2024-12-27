@@ -69,4 +69,8 @@ public class MonthendStockService {
     public Optional<MonthendStock> checkIfExists(MonthendStock stockmonth) {
         return monthendStockRepository.findById(stockmonth.getStockmonth());
     }
+
+    public List<MonthendStock> findByStockmonthBetween(String startMonth, String endMonth) {
+        return monthendStockRepository.findByStockmonthBetween(startMonth,endMonth);
+    }
 }

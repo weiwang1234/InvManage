@@ -1,9 +1,8 @@
 package com.happycode.Controller;
-
 import com.happycode.model.MonthendStock;
+import com.happycode.model.SearchCriteria;
 import com.happycode.service.MonthendStockService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +27,11 @@ public class MonthendStockController {
     public ResponseEntity<MonthendStock> getMonthendStockByStockmonth(@RequestBody String stockmonth) {
         Optional<MonthendStock> monthendStock = monthendStockService.getMonthendStockByMonth(stockmonth);
         return monthendStock.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/querySearch")
+    public List<MonthendStock> findByStockMonthBetween(@RequestBody SearchCriteria request) {
+        return monthendStockService.findByStockmonthBetween(request.getStartDate(), request.getEndDate());
     }
 
 

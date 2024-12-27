@@ -16,5 +16,8 @@ public interface MonthEndStockDetailRepository extends JpaRepository<MonthEndSto
     // 根据盘点月份查询所有数据
     List<MonthEndStockDetail> findByStockmonth(String stockMonth);
 
+    List<MonthEndStockDetail> findByStockmonthBetween(String startMonth, String endMonth);
+
+
 
 }

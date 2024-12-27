@@ -2,6 +2,8 @@ package com.happycode.Controller;
 
 import com.happycode.model.MonthEndStockDetail;
 import com.happycode.model.MonthendStock;
+import com.happycode.model.ProfitStatement;
+import com.happycode.model.SearchCriteria;
 import com.happycode.service.MonthEndStockDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +47,11 @@ public class MonthendStockDetailController {
     @GetMapping("/get/{stockMonth}")
     public List<MonthEndStockDetail> getAllByStockMonth(@PathVariable String stockMonth) {
         return service.getAllByStockMonth(stockMonth);
+    }
+
+
+    @PostMapping("/querySearch")
+    public List<MonthEndStockDetail> getProfitStatements(@RequestBody SearchCriteria request) {
+        return service.findByStockMonthBetween(request.getStartDate(), request.getEndDate());
     }
 }

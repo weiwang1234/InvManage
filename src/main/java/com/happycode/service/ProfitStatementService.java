@@ -33,4 +33,9 @@ public class ProfitStatementService {
     public void deleteProfitStatement(String profitMonth) {
         profitStatementRepository.deleteById(profitMonth);
     }
+    public List<ProfitStatement>  findByProfitmonthBetween(String startMonth, String endMonth) {
+        return profitStatementRepository.findByProfitmonthBetween(startMonth,endMonth);
+    }
+
+
 }

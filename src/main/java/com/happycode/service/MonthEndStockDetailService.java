@@ -208,4 +208,10 @@ public class MonthEndStockDetailService {
         return repository.findByStockmonth(stockMonth);
     }
 
+    public List<MonthEndStockDetail> findByStockMonthBetween(String startMonth, String endMonth){
+        return repository.findByStockmonthBetween(startMonth,endMonth);
+    }
+
+
+
 }
