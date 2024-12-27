@@ -1,5 +1,6 @@
 package com.happycode.service;
 
+import com.happycode.model.MonthEnd.DeatilSummary;
 import com.happycode.model.ProductProcessingDetail;
 import com.happycode.repository.ProductProcessingDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class ProductProcessingDetailService {
         return repository.findByProcessingid(processingid);
     }
 
-    public List<ProductProcessingDetail> getroductProcessingDetailSummary(String month) {
+    public List<DeatilSummary> getroductProcessingDetailSummary(String month) {
         return repository.getroductProcessingDetailSummary(month);
     }
 

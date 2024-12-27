@@ -1,5 +1,6 @@
 package com.happycode.service;
 
+import com.happycode.model.MonthEnd.DeatilSummary;
 import com.happycode.model.ProductProcessing;
 import com.happycode.model.ProductProcessingDetail;
 import com.happycode.model.ProductProcessingRequest;
@@ -85,7 +86,7 @@ public class ProductProcessingService {
 
     }
 
-    public List<ProductProcessing> getProcessingSum(String  month) {
+    public List<DeatilSummary> getProcessingSum(String  month) {
         return productProcessingRepository.getProductProcessingSum(month);
 
     }

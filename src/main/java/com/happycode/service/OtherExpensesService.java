@@ -6,6 +6,7 @@ import com.happycode.repository.OtherExpensesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,9 @@ public class OtherExpensesService {
 
     public List<OtherExpenses> searchOtherExpenses(SearchCriteria request) {
         return repository.findByQuery(request.getStartDate(), request.getEndDate(), request.getName());
+    }
+
+    public BigDecimal findTotalOtherExpensesByMonth(String month) {
+        return repository.findTotalOtherExpensesByMonth(month);
     }
 }

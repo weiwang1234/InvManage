@@ -11,9 +11,9 @@ public class PurchaseSummary {
 
     private String productName;
 
-    private Double totalQuantity;
+    private Double totalQuantity=0.00;
 
-    private BigDecimal totalUnitPrice;
+    private BigDecimal totalUnitPrice =BigDecimal.ZERO;
     private Long id;
     public PurchaseSummary(long productId, String productName, Double totalQuantity, BigDecimal totalUnitPrice) {
         this.productId = productId;

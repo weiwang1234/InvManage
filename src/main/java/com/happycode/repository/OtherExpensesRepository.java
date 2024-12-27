@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -19,5 +20,8 @@ public interface OtherExpensesRepository extends JpaRepository<OtherExpenses, Lo
             @Param("endDate") String endDate,
             @Param("name") String name
     );
+
+    @Query("SELECT SUM(o.otherexpensesamount) FROM OtherExpenses o WHERE o.otherexpensesdate LIKE CONCAT(:month, '%')")
+    BigDecimal findTotalOtherExpensesByMonth(@Param("month") String month);
 
 }

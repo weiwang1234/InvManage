@@ -1,5 +1,6 @@
 package com.happycode.repository;
 
+import com.happycode.model.MonthEnd.DeatilSummary;
 import com.happycode.model.ProductProcessing;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,8 +22,10 @@ public interface ProductProcessingRepository extends JpaRepository<ProductProces
 
 
 
-    @Query(value = "select    productid ,productname ,sum(quantity)  as quantity from  productprocessing  where " +
-            "  processingdate  like CONCAT(:month, '%')   group  by   productid ,productname ",
-            nativeQuery = true)
-    List<ProductProcessing> getProductProcessingSum(@Param("month") String month);
+    @Query("SELECT new com.happycode.model.MonthEnd.DeatilSummary(" +
+            "p.productid, p.productname, SUM(p.quantity)) " +
+            "FROM ProductProcessing p " +
+            "WHERE p.processingdate LIKE CONCAT(:month, '%') " +
+            "GROUP BY p.productid, p.productname")
+    List<DeatilSummary> getProductProcessingSum(@Param("month") String month);
 }

@@ -10,9 +10,9 @@ public class OderDetailSummary {
 
     private String productname;
 
-    private Double quantity;
+    private Double quantity=0.00;
 
-    private BigDecimal unitprice;
+    private BigDecimal unitprice =BigDecimal.ZERO;;
     
     public OderDetailSummary(long productid, String productname, Double quantity, BigDecimal unitprice) {
         this.productid = productid;

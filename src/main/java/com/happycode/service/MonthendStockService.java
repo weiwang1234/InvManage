@@ -39,6 +39,7 @@ public class MonthendStockService {
      * 有则更新无责插入
      */
 
+
     public MonthendStock updateMonthendStock(MonthendStock updatedStock) {
         if (updatedStock.getStockmonth() == null || updatedStock.getStockmonth().isEmpty()) {
             throw new IllegalArgumentException("Stockmonth cannot be null or empty");
@@ -48,7 +49,6 @@ public class MonthendStockService {
         if (existingStock.isPresent()) {
             MonthendStock existing = existingStock.get();
             existing.setStockmonth(updatedStock.getStockmonth()); // 保留主键
-            existing.setStockmonth(updatedStock.getStockmonth());
             return monthendStockRepository.save(existing);
         } else {
             return monthendStockRepository.save(updatedStock);
