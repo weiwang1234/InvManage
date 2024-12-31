@@ -16,12 +16,17 @@ public class ProductService {
 
     // 获取所有产品
     public Iterable<Product> getAllProducts() {
-        return  productRepository.findByProductstatus("1");
+        return  productRepository.findAll();
     }
 
     // 根据id获取产品
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    // 根据id获取产品
+    public List<Product> findByProductstatus() {
+        return productRepository.findByProductstatus("1");
     }
 
     // 添加新产品
@@ -39,6 +44,26 @@ public class ProductService {
     }
 
     // 删除产品
+    public boolean TakeeffectPartner(Long id) {
+
+        Optional<Product> productOpt = getProductById(id);
+
+        if (productOpt.isPresent()) {
+            Product foundPartner = productOpt.get();
+
+            // 修改 status 字段为 "2"（表示软删除）
+            foundPartner.setProductstatus("1");
+
+            // 保存修改后的合作方对象
+            productRepository.save(foundPartner);
+            return true;
+        }
+
+        return false; // 如果找不到产品，返回 false
+
+    }
+
+
     public boolean deleteProduct(Long id) {
 
         Optional<Product> productOpt = getProductById(id);

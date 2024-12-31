@@ -23,6 +23,11 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @PostMapping("/getAllProductstatus")
+    public List<Product> findByProductstatus() {
+        return productService.findByProductstatus();
+    }
+
     // 获取指定id的产品
     @PostMapping("/getById")
     public ResponseEntity<Product> getProductById(@RequestParam Long id) {
@@ -55,6 +60,14 @@ public class ProductController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+    @PostMapping("/takeeffectPartner")
+    public ResponseEntity<Void> TakeeffectPartner(@RequestBody Product product) {
+        if (productService.TakeeffectPartner(product.getProductid())) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 
     @PostMapping("/getproduct/{productid}")
     public List<Product> getActiveProductsExcludingId(@PathVariable("productid") Long excludedId) {

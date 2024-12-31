@@ -15,12 +15,17 @@ public class PartnerService {
     @Autowired
     private PartnerRepository partnerRepository;
 
-    // 获取所有合作方
+
     public List<Partner> getAllPartners() {
+        return partnerRepository.findAll();  // 查询 partnerstatus 为 '1' 的数据
+    }
+
+    // 获取所有合作方
+    public List<Partner> getAllOrderPartners() {
         return partnerRepository.findByPartnerstatusAndPartnertype("1","1");  // 查询 partnerstatus 为 '1' 的数据
     }
     public List<Partner> getAllpurchasePartners() {
-        return partnerRepository.findByPartnerstatusAndPartnertype("1","1");  // 查询 partnerstatus 为 '1' 的数据
+        return partnerRepository.findByPartnerstatusAndPartnertype("1","2");  // 查询 partnerstatus 为 '1' 的数据
     }
 
     // 根据 id 查找合作方
@@ -66,6 +71,26 @@ public class PartnerService {
             System.out.println("未找到合作方，无法删除");
         }
     }
+
+
+    public void TakeeffectPartner(Long id) {
+        Optional<Partner> partnerOpt = getPartnerById(id);
+
+        // 如果找到了合作方
+        if (partnerOpt.isPresent()) {
+            Partner foundPartner = partnerOpt.get();
+
+            // 修改 status 字段为 "2"（表示软删除）
+            foundPartner.setPartnerstatus("1");
+
+            // 保存修改后的合作方对象
+            partnerRepository.save(foundPartner);
+        } else {
+            // 如果未找到合作方，做一些处理（如抛出异常或返回提示）
+            System.out.println("未找到合作方，无法删除");
+        }
+    }
+
 
     // 根据名称和电话进行搜索
     public List<Partner> searchPartners(String query) {

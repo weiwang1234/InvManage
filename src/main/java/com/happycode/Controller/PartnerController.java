@@ -18,10 +18,16 @@ public class PartnerController {
     @Autowired
     private PartnerService partnerService;
 
-    // 获取所有合作方（POST 请求）
+
+
     @PostMapping("/getAll")
     public List<Partner> getAllPartners() {
         return partnerService.getAllPartners();
+    }
+    // 获取所有合作方（POST 请求）
+    @PostMapping("/getAllOrderPartners")
+    public List<Partner> getAllOrderPartners() {
+        return partnerService.getAllOrderPartners();
     }
     @PostMapping("/getpurchaseAll")
     public List<Partner> getpurchasePartners() {
@@ -54,6 +60,17 @@ public class PartnerController {
     public ResponseEntity<String> deletePartner(@RequestBody Partner partner) {
         try {
             partnerService.deletePartner(partner.getPartnerid()); // 调用 service 层的软删除方法
+            return ResponseEntity.ok("合作方已成功删除");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("未找到合作方，无法删除");
+        }
+    }
+
+    @PostMapping("/takeeffectPartner")
+    public ResponseEntity<String> takeeffectPartner(@RequestBody Partner partner) {
+        try {
+            partnerService.TakeeffectPartner(partner.getPartnerid()); // 调用 service 层的软删除方法
             return ResponseEntity.ok("合作方已成功删除");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
