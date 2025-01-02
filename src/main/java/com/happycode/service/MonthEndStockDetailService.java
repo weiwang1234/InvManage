@@ -93,8 +93,7 @@ public class MonthEndStockDetailService {
             MonthEndStockDetail stockDetail = stockDetails.getOrDefault(productId, new MonthEndStockDetail());
             stockDetail.setProductid(productId);
             stockDetail.setProductname(deatilsummary.getProductname());
-            stockDetail.setMonthsoldquantity(deatilsummary.getQuantity()); //本月卖货数量
-            stockDetail.setMonthsoldamount(deatilsummary.getUnitprice());//本月卖货金额
+            stockDetail.setMonthprocessing(deatilsummary.getQuantity()); //本月卖货数量
             stockDetails.put(productId, stockDetail);
         }
 
@@ -104,7 +103,7 @@ public class MonthEndStockDetailService {
             MonthEndStockDetail stockDetail = stockDetails.getOrDefault(productId, new MonthEndStockDetail());
             stockDetail.setProductid(productId);
             stockDetail.setProductname(deatilsummary.getProductname());
-            stockDetail.setMonthsoldquantity(deatilsummary.getQuantity()); //本月卖货数量
+            stockDetail.setMonthprocessedoutput(deatilsummary.getQuantity()); //本月卖货数量
             stockDetails.put(productId, stockDetail);
         }
 
@@ -145,11 +144,13 @@ public class MonthEndStockDetailService {
                 existing.setStockmonth(monthendstock.getStockmonth());
                 existing.setProductid(existing.getProductid());
                 existing.setProductname(existing.getProductname());
-                existing.setMonthprocessing(existing.getMonthprocessing());
-                existing.setMonthpurchasesamount(existing.getMonthpurchasesamount());
-                //出货
-                existing.setMonthsoldquantity(stockDetail.getMonthsoldquantity()); //本月卖货数量
-                existing.setMonthsoldamount(stockDetail.getMonthsoldamount());//本月卖货金额
+                existing.setLastmonthinventory(stockDetail.getLastmonthinventory());
+                existing.setMonthpurchases(stockDetail.getMonthpurchases());
+                existing.setMonthpurchasesamount(stockDetail.getMonthpurchasesamount());
+                existing.setMonthprocessing(stockDetail.getMonthprocessing());
+                existing.setMonthprocessedoutput(stockDetail.getMonthprocessedoutput());
+                existing.setMonthsoldquantity(stockDetail.getMonthsoldquantity());
+                existing.setMonthsoldamount(stockDetail.getMonthsoldamount());
                 //本月库存
                 existing.setMonthinventory(monthinventory);
                 repository.save(existing);
