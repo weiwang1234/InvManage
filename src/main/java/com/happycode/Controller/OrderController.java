@@ -1,19 +1,16 @@
 package com.happycode.Controller;
 
-import com.happycode.model.Order;
-import com.happycode.model.OrderDetail;
-import com.happycode.model.OrderRequest;
-import com.happycode.model.SearchCriteria;
+import com.happycode.model.*;
 import com.happycode.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import  com.happycode.model.home.salesData;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import com.happycode.service.HomeService;
 
 @RestController
 @RequestMapping("/orders")
@@ -21,6 +18,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private HomeService HomeService;
 
 
 
@@ -126,6 +125,13 @@ public class OrderController {
 
 
         return ResponseEntity.ok(orderService.summarydetailsViews(sWhere)); // 确保返回 200 状态码
+
+    }
+
+    @PostMapping("/getHomepageSum")
+    public ResponseEntity<salesData>  getHomepageSum(@RequestBody OrderRequest orderRequest) {
+        // 默认查询条件为 null，调用服务层动态查询
+        return ResponseEntity.ok( HomeService.getHomepageSum(""));// 确保返回 200 状态码
 
     }
 

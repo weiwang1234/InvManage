@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -83,6 +84,14 @@ public class PurchaseOrderDetailService {
 
     public List<PurchaseOrderDetail> findByOrderDate(String month) {
         return repository.findByOrderDate(month);
+    }
+
+    public BigDecimal getTotalUnitPriceByOrderDate(String date) {
+        return repository.getTotalUnitPriceByOrderDate(date);
+    }
+
+    public BigDecimal getTotalUnitPrice(String date) {
+        return repository.getTotalUnitPrice(date);
     }
 
 }

@@ -2,12 +2,13 @@ package com.happycode.repository;
 
 import com.happycode.model.MonthEnd.OderDetailSummary;
 import com.happycode.model.OrderDetail;
-import com.happycode.model.PurchaseOrderDetail;
+import com.happycode.model.home.SalesStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
@@ -24,6 +25,27 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
     @Query("SELECT od FROM OrderDetail od WHERE od.orderdate LIKE :orderDate")
     List<OrderDetail> findByOrderDate(@Param("orderDate") String orderDate);
+    //当日销售总金额
+    @Query("SELECT SUM(o.unitprice) FROM OrderDetail o WHERE o.orderdate = :orderDate")
+    BigDecimal findTotalSalesByOrderDate(String orderDate);
+    //当月销售总金额
+    @Query("SELECT SUM(od.unitprice) " +
+            "FROM OrderDetail od WHERE od.orderdate LIKE :orderDatePattern")
+    BigDecimal getSalesStatistics(@Param("orderDatePattern") String orderDatePattern);
+
+
+    @Query("SELECT new com.happycode.model.home.SalesStatistics(" +
+            "DATE_FORMAT(od.orderdate, '%Y-%m'), " +
+            "SUM(od.unitprice), " +
+            "SUM(pd.unitprice)) " +
+            "FROM OrderDetail od " +
+            "JOIN PurchaseOrderDetail pd ON pd.orderdate = od.orderdate " +
+            "WHERE od.orderdate LIKE :orderDatePattern " +
+            "GROUP BY DATE_FORMAT(od.orderdate, '%Y-%m')")
+    List<SalesStatistics> getSalesStatisticsByMonth(@Param("orderDatePattern") String orderDatePattern);
+
+
+
 
 
 }

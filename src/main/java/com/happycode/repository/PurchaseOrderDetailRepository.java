@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -51,6 +52,17 @@ public interface PurchaseOrderDetailRepository extends JpaRepository<PurchaseOrd
 
     @Query("SELECT od FROM PurchaseOrderDetail od WHERE od.orderdate LIKE :orderDate")
     List<PurchaseOrderDetail> findByOrderDate(@Param("orderDate") String orderDate);
+
+
+    @Query("SELECT SUM(pd.unitprice) " +
+            "FROM PurchaseOrderDetail pd WHERE pd.orderdate = :orderDate")
+    BigDecimal getTotalUnitPriceByOrderDate(@Param("orderDate") String orderDate);
+
+
+    @Query("SELECT SUM(pd.unitprice) FROM PurchaseOrderDetail pd WHERE pd.orderdate LIKE :orderDatePattern")
+    BigDecimal getTotalUnitPrice(@Param("orderDatePattern") String orderDatePattern);
+
+
 
 
 }

@@ -16,7 +16,7 @@ public class Inventory {
 
     private Long productid;
     private String productname;
-    private double quantity;
+        private double quantity;
 
 
 

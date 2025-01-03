@@ -4,6 +4,7 @@ import com.happycode.model.Inventory;
 import com.happycode.model.MonthEnd.OderDetailSummary;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
+import com.happycode.model.home.SalesStatistics;
 import com.happycode.repository.InventoryRepository;
 import com.happycode.repository.OrderDetailRepository;
 import com.happycode.repository.OrderRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,6 +98,19 @@ public class OrderDetailService {
 
     public List<OrderDetail> findByOrderDate(String orderDate) {
         return orderDetailRepository.findByOrderDate(orderDate);
+    }
+
+    public BigDecimal findTotalSalesByOrderDate(String orderDate) {
+        return orderDetailRepository.findTotalSalesByOrderDate(orderDate);
+    }
+    public BigDecimal getSalesStatistics(String orderDate) {
+
+        System.out.println(orderDetailRepository.getSalesStatistics(orderDate));
+        return orderDetailRepository.getSalesStatistics(orderDate);
+    }
+
+    public List<SalesStatistics> getSalesStatisticsByMonth(String orderDate) {
+        return orderDetailRepository.getSalesStatisticsByMonth(orderDate);
     }
 
 }
