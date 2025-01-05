@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class JwtUtil {
     private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);  // 签名密钥
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;  // 24小时过期时间
+    private static final long EXPIRATION_TIME = 1000 * 60 * 30 * 1;  // 24小时过期时间
 
     // 生成 JWT Token
     public static String generateToken(String username) {
