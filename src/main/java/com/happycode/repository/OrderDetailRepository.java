@@ -35,13 +35,12 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
 
     @Query("SELECT new com.happycode.model.home.SalesStatistics(" +
-            "DATE_FORMAT(od.orderdate, '%Y-%m'), " +
+            "substring(od.orderdate,1,7) , " +
             "SUM(od.unitprice), " +
-            "SUM(pd.unitprice)) " +
+            " '1' )" +
             "FROM OrderDetail od " +
-            "JOIN PurchaseOrderDetail pd ON pd.orderdate = od.orderdate " +
             "WHERE od.orderdate LIKE :orderDatePattern " +
-            "GROUP BY DATE_FORMAT(od.orderdate, '%Y-%m')")
+            "group  by substring(od.orderdate,1,7) ")
     List<SalesStatistics> getSalesStatisticsByMonth(@Param("orderDatePattern") String orderDatePattern);
 
 

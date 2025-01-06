@@ -5,6 +5,7 @@ import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrder;
 import com.happycode.model.PurchaseOrderDetail;
 import com.happycode.model.SearchCriteria;
+import com.happycode.model.home.SalesStatistics;
 import com.happycode.repository.PurchaseOrderDetailRepository;
 import com.happycode.repository.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,4 +95,7 @@ public class PurchaseOrderDetailService {
         return repository.getTotalUnitPrice(date);
     }
 
+    public List<SalesStatistics> getSalesStatisticsByMonth(String orderDate) {
+        return repository.getSalesStatisticsByMonth(orderDate);
+    }
 }

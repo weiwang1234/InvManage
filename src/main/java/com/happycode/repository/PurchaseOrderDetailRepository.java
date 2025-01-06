@@ -5,6 +5,7 @@ import com.happycode.model.OrderDetail;
 import com.happycode.model.OrderDetailSummary;
 import com.happycode.model.PurchaseOrderDetail;
 import com.happycode.model.PurchaseOrderSummaryExprot;
+import com.happycode.model.home.SalesStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -62,6 +63,15 @@ public interface PurchaseOrderDetailRepository extends JpaRepository<PurchaseOrd
     @Query("SELECT SUM(pd.unitprice) FROM PurchaseOrderDetail pd WHERE pd.orderdate LIKE :orderDatePattern")
     BigDecimal getTotalUnitPrice(@Param("orderDatePattern") String orderDatePattern);
 
+
+    @Query("SELECT new com.happycode.model.home.SalesStatistics(" +
+            "substring(od.orderdate,1,7) , " +
+            "SUM(od.unitprice), " +
+            " '2' )" +
+            "FROM  PurchaseOrderDetail od " +
+            "WHERE od.orderdate LIKE :orderDatePattern " +
+            "group  by substring(od.orderdate,1,7) ")
+    List<SalesStatistics> getSalesStatisticsByMonth(@Param("orderDatePattern") String orderDatePattern);
 
 
 

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderDetailService {
@@ -28,6 +27,8 @@ public class OrderDetailService {
     private OrderService orderservice;
     @Autowired
     private OrderRepository orderrepository;
+    @Autowired
+    private PurchaseOrderDetailService PurchaseOrderDetailService;
 
 
 
@@ -110,7 +111,34 @@ public class OrderDetailService {
     }
 
     public List<SalesStatistics> getSalesStatisticsByMonth(String orderDate) {
-        return orderDetailRepository.getSalesStatisticsByMonth(orderDate);
-    }
+        List<SalesStatistics> order = orderDetailRepository.getSalesStatisticsByMonth(orderDate);
+        List<SalesStatistics>  pur =  PurchaseOrderDetailService.getSalesStatisticsByMonth(orderDate);
+        Map<String, SalesStatistics> dateMap = new HashMap<>();
 
+        // 将 A 列表中的元素加入 map
+        for (SalesStatistics sales : order) {
+            dateMap.put(sales.getDate(), sales);
+        }
+
+        // 将 B 列表中的元素合并
+        for (SalesStatistics sales : pur) {
+            SalesStatistics existing = dateMap.get(sales.getDate());
+            if (existing != null) {
+                // 如果日期存在于 A 列表中，合并 field2 和 field3
+                // existing.setSales(sales.getSales());
+                existing.setPurchase(sales.getPurchase());
+            } else {
+                // 如果日期不存在，直接加入 C 列表
+                dateMap.put(sales.getDate(), sales);
+            }
+        }
+
+        // 将 map 中的结果转换为列表 C
+        List<SalesStatistics> C = new ArrayList<>(dateMap.values());
+        C.sort(Comparator.comparing(SalesStatistics::getDate));
+
+
+
+        return C;
+    }
 }
