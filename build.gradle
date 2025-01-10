@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.36'
 // 选择日志实现（以下示例使用 Logback，也可以选择其他实现）
     implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+
 
 
 

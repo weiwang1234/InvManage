@@ -26,3 +26,6 @@ spring:
   jackson:
     serialization:
       indent-output: true  # JSON 美化输出
+logging:
+  file:
+    name: ${LOG_DIR:D:/logs}/application.log  # 默认日志路径为 D:/logs/application.log
