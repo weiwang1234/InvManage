@@ -97,27 +97,27 @@ public class OrderService {
     @Transactional
     public void createOrderWithDetails(Order order, List<OrderDetail> orderDetails) {
         // 遍历订单详情，检查库存是否充足
-        for (OrderDetail detail : orderDetails) {
-            long productId = detail.getProductid();
-            double quantitySold = detail.getQuantity();
-
-            // 获取当前库存
-            Inventory inventory = inventoryRepository.findByProductid(productId);
-
-            if (inventory == null || inventory.getQuantity() < quantitySold) {
-                throw new RuntimeException("产品 " + detail.getProductname() + " 的库存不足，无法完成订单！");
-            }
-        }
-
-        // 更新库存
-        for (OrderDetail detail : orderDetails) {
-            long productId = detail.getProductid();
-            double quantitySold = detail.getQuantity();
-
-            Inventory inventory = inventoryRepository.findByProductid(productId);
-            inventory.setQuantity(inventory.getQuantity() - quantitySold);
-            inventoryRepository.save(inventory);
-        }
+//        for (OrderDetail detail : orderDetails) {
+//            long productId = detail.getProductid();
+//            double quantitySold = detail.getQuantity();
+//
+//            // 获取当前库存
+//            Inventory inventory = inventoryRepository.findByProductid(productId);
+//
+//            if (inventory == null || inventory.getQuantity() < quantitySold) {
+//                throw new RuntimeException("产品 " + detail.getProductname() + " 的库存不足，无法完成订单！");
+//            }
+//        }
+//
+//        // 更新库存
+//        for (OrderDetail detail : orderDetails) {
+//            long productId = detail.getProductid();
+//            double quantitySold = detail.getQuantity();
+//
+//            Inventory inventory = inventoryRepository.findByProductid(productId);
+//            inventory.setQuantity(inventory.getQuantity() - quantitySold);
+//            inventoryRepository.save(inventory);
+//        }
 
         // 保存订单，返回生成的主键
         Order savedOrder = orderRepository.save(order);

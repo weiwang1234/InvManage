@@ -60,7 +60,7 @@ public class PurchaseOrderService {
             detail.setOrderparname(savedOrder.getOrderparname());
             purchaseOrderDetailRepository.save(detail);
             //添加成功更新库存
-            inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"increase");
+            //inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"increase");
         }
 
     }
