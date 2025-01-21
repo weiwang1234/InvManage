@@ -55,7 +55,7 @@ public class PurchaseOrderDetailService {
                 .orElseThrow(() -> new IllegalArgumentException("订单明细未找到，ID: "));
 
         //减少库存
-        inventoryservice.updateInventory(detail.getProductid(), detail.getProductname(), detail.getQuantity(),"decrease");
+       // inventoryservice.updateInventory(detail.getProductid(), detail.getProductname(), detail.getQuantity(),"decrease");
         //更新主订单金额
         PurchaseOrder order = purchaseorderrepository.findById(detail.getOrderid())
                 .orElseThrow(() -> new IllegalArgumentException("订单未找到 " ));

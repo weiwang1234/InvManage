@@ -68,11 +68,11 @@ public class PurchaseOrderService {
     @Transactional
     public void deleteOrderWithDetails(Long orderId) {
         // 查询所有与订单关联的明细记录
-        List<PurchaseOrderDetail> orderDetails = purchaseOrderDetailRepository.findByOrderid(orderId);
-        // 恢复库存
-        for (PurchaseOrderDetail detail : orderDetails) {
-            inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"decrease");
-        }
+//        List<PurchaseOrderDetail> orderDetails = purchaseOrderDetailRepository.findByOrderid(orderId);
+//        // 恢复库存
+//        for (PurchaseOrderDetail detail : orderDetails) {
+//            inventoryservice.updateInventory(detail.getProductid(),detail.getProductname(),detail.getQuantity(),"decrease");
+//        }
         // 删除订单明细
         purchaseOrderDetailRepository.deleteByOrderid(orderId);
         // 删除主订单

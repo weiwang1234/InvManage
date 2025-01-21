@@ -62,23 +62,23 @@ public class OrderService {
     @Transactional
     public boolean deleteOrder(Long orderId) {
         // 查询订单明细
-        List<OrderDetail> orderDetails = orderdetailrepository.findByOrderid(orderId);
-
-        // 恢复库存
-        for (OrderDetail detail : orderDetails) {
-            long productId = detail.getProductid();
-            double quantitySold = detail.getQuantity();
-
-            // 查找库存记录
-            Inventory inventory = inventoryRepository.findByProductid(productId);
-            if (inventory != null) {
-                // 恢复库存数量
-                inventory.setQuantity(inventory.getQuantity() + quantitySold);
-                inventoryRepository.save(inventory);
-            } else {
-                throw new RuntimeException("库存记录不存在，无法恢复库存！");
-            }
-        }
+//        List<OrderDetail> orderDetails = orderdetailrepository.findByOrderid(orderId);
+//
+//        // 恢复库存
+//        for (OrderDetail detail : orderDetails) {
+//            long productId = detail.getProductid();
+//            double quantitySold = detail.getQuantity();
+//
+//            // 查找库存记录
+//            Inventory inventory = inventoryRepository.findByProductid(productId);
+//            if (inventory != null) {
+//                // 恢复库存数量
+//                inventory.setQuantity(inventory.getQuantity() + quantitySold);
+//                inventoryRepository.save(inventory);
+//            } else {
+//                throw new RuntimeException("库存记录不存在，无法恢复库存！");
+//            }
+//        }
 
         // 删除订单明细
         orderdetailrepository.deleteByOrderid(orderId);
