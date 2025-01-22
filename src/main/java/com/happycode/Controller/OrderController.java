@@ -1,6 +1,7 @@
 package com.happycode.Controller;
 
 import com.happycode.model.*;
+import com.happycode.model.home.Maintenance;
 import com.happycode.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,18 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedOrder);
+    }
+    @PostMapping("/find")
+    public List<Maintenance> findOrders(
+            @RequestParam String targetDate,
+            @RequestParam int daysDifference) {
+        return orderService.findOrdersByMaintenanceReminderAndDateDifference(targetDate, daysDifference);
+    }
+
+    @PostMapping("/updatereminder")
+    public Order updatereminder(
+            @RequestParam Long orderid) {
+        return orderService.updatereminder(orderid);
     }
 
     // 删除订单

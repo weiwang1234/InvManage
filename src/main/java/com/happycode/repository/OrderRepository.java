@@ -1,6 +1,7 @@
 package com.happycode.repository;
 
 import com.happycode.model.Order;
+import com.happycode.model.home.Maintenance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("endDate") String endDate,
             @Param("customerName") String customerName
     );
-
-
+    @Query("SELECT new com.happycode.model.home.Maintenance(ol.orderid,ol.orderparname,ol.orderdate,pl.partnerphone) FROM Order ol JOIN Partner pl ON ol.orderparid = pl.partnerid " +
+            "WHERE ol.maintenance = '1' AND ol.reminder = '1' " +
+            "AND DATEDIFF(:targetDate, STR_TO_DATE(ol.orderdate, '%Y-%m-%d')) > :daysDifference")
+    List<Maintenance> findOrdersByMaintenanceReminderAndDateDifference(@Param("targetDate") String targetDate, @Param("daysDifference") int daysDifference);
 }

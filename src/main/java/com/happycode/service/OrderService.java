@@ -7,6 +7,7 @@ import com.happycode.model.Inventory;
 import com.happycode.model.Order;
 import com.happycode.model.OrderDetail;
 import com.happycode.model.SearchCriteria;
+import com.happycode.model.home.Maintenance;
 import com.happycode.repository.InventoryRepository;
 import com.happycode.repository.OrderDetailRepository;
 import com.happycode.repository.OrderRepository;
@@ -57,6 +58,23 @@ public class OrderService {
         }
         return null;
     }
+
+    public Order updatereminder(Long orderId) {
+        Order rule =null;
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        orderOptional.ifPresent(order -> {
+            // 如果找到了订单，执行保存操作。
+            order.setReminder("2");
+            Order e = orderRepository.save(order);
+        });
+
+        return rule;
+    }
+
+    public List<Maintenance> findOrdersByMaintenanceReminderAndDateDifference(String targetDate, int daysDifference) {
+        return orderRepository.findOrdersByMaintenanceReminderAndDateDifference(targetDate, daysDifference);
+    }
+
 
     // 删除订单
     @Transactional
