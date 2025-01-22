@@ -26,6 +26,12 @@ public class Order {
     @Column(name = "orderparname")
     private String orderparname;
 
+    @Column(name = "maintenance")
+    private String maintenance;
+
+    @Column(name = "reminder")
+    private String reminder="1";
+
     @Column(name = "inserttime", updatable = false, insertable = false)
     private String inserttime;
 
