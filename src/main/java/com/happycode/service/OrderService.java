@@ -60,7 +60,7 @@ public class OrderService {
     }
 
     public Order updatereminder(Long orderId) {
-        Order rule =null;
+        Order rule = null;
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         orderOptional.ifPresent(order -> {
             // 如果找到了订单，执行保存操作。
