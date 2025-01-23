@@ -37,9 +37,10 @@ public class PartnerController {
 
     // 根据 id 获取合作方（POST 请求）
     @PostMapping("/getById")
-    public ResponseEntity<Partner> getPartnerById(@RequestBody Long id) {
-        Optional<Partner> partner = partnerService.getPartnerById(id);
-        return partner.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Partner> getPartnerById(@RequestParam Long partnerId) {
+        Optional<Partner> partner = partnerService.getPartnerById(partnerId);
+        return partner.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // 新增合作方（POST 请求）

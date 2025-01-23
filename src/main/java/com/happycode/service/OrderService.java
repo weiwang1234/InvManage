@@ -75,6 +75,10 @@ public class OrderService {
         return orderRepository.findOrdersByMaintenanceReminderAndDateDifference(targetDate, daysDifference);
     }
 
+    public int countOrdersWithReminders(String targetDate, int daysDifference) {
+        return orderRepository.countOrdersWithReminders(targetDate, daysDifference);
+    }
+
 
     // 删除订单
     @Transactional

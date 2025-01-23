@@ -149,6 +149,13 @@ public class OrderController {
     }
 
 
+    @PostMapping("/count")
+    public int getOrderCount(@RequestParam("date") String date, @RequestParam("days") int days) {
+        return orderService.countOrdersWithReminders(date, days);
+    }
+
+
+
 
 
 }

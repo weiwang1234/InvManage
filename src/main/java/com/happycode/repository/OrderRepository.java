@@ -29,4 +29,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "WHERE ol.maintenance = '1' AND ol.reminder = '1' " +
             "AND DATEDIFF(:targetDate, STR_TO_DATE(ol.orderdate, '%Y-%m-%d')) > :daysDifference")
     List<Maintenance> findOrdersByMaintenanceReminderAndDateDifference(@Param("targetDate") String targetDate, @Param("daysDifference") int daysDifference);
+
+    @Query(value = "SELECT count(distinct ol.orderid) " +
+            "FROM orders_list ol, partner_list pl " +
+            "WHERE ol.orderparid = pl.partnerid " +
+            "AND ol.maintenance = '1' " +
+            "AND ol.reminder = '1' " +
+            "AND DATEDIFF(:targetDate, STR_TO_DATE(ol.orderdate, '%Y-%m-%d')) > :days", nativeQuery = true)
+    int countOrdersWithReminders(@Param("targetDate") String targetDate, @Param("days") int days);
+
 }
